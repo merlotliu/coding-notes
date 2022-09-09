@@ -129,6 +129,18 @@ void swap(int& a, int& b) {
 
 将这组数从头异或到尾，得到的结果就是该数。
 
+```
+int getOnlyOddTimesNum(int *arr, int len) {
+	int eor = 0;
+	for (int i = 0; i < len; i++) {
+		eor ^= arr[i];
+	}
+	return eor;
+}
+```
+
+
+
 ### 题型二
 
 一组数中，有两个数出现了奇数次，其他所有数出现了偶数次，求这两个出现了奇数次的数。
@@ -137,6 +149,26 @@ void swap(int& a, int& b) {
 
 - 首先，全部异或得到两个数a和b的异或结果eor；
 - 对于eor，进行eor&(~eor+1)的操作，获得最右侧为1的位置，这一位表示，a和b不相同的其中一位。对所有这一位为1或不为1的数异或，得到的结果就是其中一个数，在与eor异或可得到另外一个数。
+
+```
+std::vector<int> getTwoOddTimesNum(int *arr, int len) {
+	int eor = 0;
+	for (int i = 0; i < len; i++) {
+		eor ^= arr[i];
+	}
+	int opp_byte = eor & (~eor + 1);
+	int a = 0;
+	for (int i = 0; i < len; i++) {
+		if ((opp_byte & arr[i]) == 0) {
+			a ^= arr[i];
+		}
+	}
+	int b = eor ^ a;
+	return {a, b};
+}
+```
+
+
 
 ## 插入排序
 
@@ -235,16 +267,122 @@ $$T(N)=a*T(N/b)+O(N^d)$$
 
 可以通过二分递归的方法，将找数组中的最大值拆解为找数组左半部分的最大值和数组右半部分的最大值，在从这两个最大值的中找到最大值。对于左半部分和右半部分仍然可以这么做，直到每一部分只剩下一个数（递归结束条件），剩下一个数自然这个数就是这一部分最大值，返回即可。
 
+```c++
+#pragma once
+class GetMax {
+public:
+	static int getMax(int *arr, int len) {
+		return getMax(arr, 0, len - 1);
+	}
+
+	static int getMax(int *arr, int l, int r) {
+		// end condition
+		if (l == r) {
+			return arr[l];
+		}
+		// recursion
+		int m = l + (r - l) >> 1; // prevent overflow
+		int left_max = getMax(arr, l, m);
+		int right_max = getMax(arr, m+1, r);
+		return max(left_max, right_max);
+	}
+
+	static int max(int a, int b) {
+		return a > b ? a : b;
+	}
+};
 ```
 
+#### 分析
 
-```
+在这一问题中，总问题每次被拆解为2个子问题，则子问题的规模为总问题的1/2，即b=2，每一次子问题被计算2次，即a=2。除去子问题的递归，我们每次需要计算一次中间值m，比较一次大小，这些操作都是常数操作，故这一部分时间复杂度为O(1)，即d=0。
+
+所以，$$log_{b}a=log_{2}2=1>d=0$$，即时间复杂度为$$O(N*log_{2}2)=O(N)$$。
 
 
 
 ## 归并排序
 
+将数组分为左右两部分，分别对这两部分进行排序，排序完成后，合并两部分的结果。
 
+实际上，不断的将数组进行拆解，拆解到每一部分只剩下一个数的时候，一定是有序的。
+
+合并时，首先申请一个额外的数组，然后同时遍历并依次比较两个部分的内容，每次将数小的添加进辅助数组，直到其中一部分内容遍历完，将另外一个部分全部添加到辅助数组的末尾。最后将辅助数组的内容赋值到原数组的对应位置即可。
+
+```c++
+class MergeSort{
+public:
+	void sort(int *arr, int len) {
+		if (arr == nullptr || len < 2) {
+			return;
+		}
+		mergeSort(arr, 0, len - 1);
+	}
+
+	void mergeSort(int *arr, int l, int r) {
+		if (l == r) {
+			return;
+		}
+		int m = l + ( (r - l) >> 1 ); // >> 优先级低于 +，应该加括号
+		mergeSort(arr, l, m);
+		mergeSort(arr, m+1, r);
+		merge(arr, l, m, r);
+		return;
+	}
+
+	void merge(int *arr, int l, int m, int r) {
+		int *help = new int[r - l + 1];
+		int i = 0; 
+		int p1 = l;
+		int p2 = m+1;
+		while (p1 <= m && p2 <= r) {
+			help[i++] = arr[p1] <= arr[p2] ? arr[p1++] : arr[p2++];
+		}
+		while (p1 <= m) {
+			help[i++] = arr[p1++];
+		}
+		while (p2 <= r) {
+			help[i++] = arr[p2++];
+		}
+		for (int j = l, i = 0; j <= r; ) { 
+			arr[j++] = help[i++];
+		}
+		delete[] help;
+		return;
+	}
+};
+```
+
+### 时间复杂度
+
+时间复杂度O(nlogn)，空间复杂度O(n)
+
+
+
+### 小和&逆序对
+
+#### 小和问题
+
+在一个数组中，每个数左边比当前数小的数累加起来，叫做这个数组的小和，求一个数组的小和。
+
+例：[1, 3, 4, 2, 5] 1左边没有比1小的数；3左边比三小的数：1；4左边比4小的数：1, 3；2左边比2小的数：1；5左边比5小的数：1, 3, 4, 2；故小和：1+ 1+3 + 1+ 1 + 3 + 4 + 2=16
+
+#### 逆序对问题
+
+在一个数组中，左边的数比右边的数大，则两个数构成一个逆序对，请打印所有逆序对。
+
+#### 解法
+
+对于小和问题，我们发现，问题等价于，右边有几个数比当前数大则累加几次，结合归并排序，我们即可获得优于O(n^2)的解法。
+
+对于合并部分的逻辑需要进行一些改动：
+
+- 判断两部分大小的时候，如果相等，则不产生小和，并且先拷贝右侧内容；
+- 如果左侧小于右侧，产生小和，右侧应该有右边界索引减去右侧当前指针索引下标再加1的数量，乘上当前左侧数，即为当前部分小和；例如：左侧为[1,3,4]，右侧为[2,5]时（合并时各部分一定是已经排好序的，这样才能确定后面有几个数比当前数大），对于1来说，右侧当前索引为0，边界索引为1，则小和为(1-0+1)*1=2；
+
+```
+
+```
 
 
 
