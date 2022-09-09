@@ -459,3 +459,68 @@ void netherlandFlag(int num, int *arr, int len) {
 
 ## 快排
 
+影响快排效率的最重要因素就是，划分值的选取，选取的好时间复杂度趋向于O(n*logn)，反之趋向于O(n^2)。
+
+具体步骤：
+
+- 选取划分值；
+- 根据划分值，划分区域（在这一部分遍历时要从区域的左端开始而不是从0开始）；
+- 细分子区域；
+
+```c++
+#pragma once
+#include <random>
+#include <time.h>
+#include <iostream>
+
+class QuickSort{
+public:
+	void sort(int *arr, int len) {
+		if (arr == nullptr || len < 2) {
+			return;
+		}
+		srand((unsigned int)time(nullptr));
+		quickSort(arr, 0, len-1);
+	}
+
+private:
+	void quickSort(int *arr, int L, int R) {
+		// end condition
+		if (L >= R) {
+			return;
+		}
+
+		//int flag = arr[R]; // 2.0
+		// random flag
+		int flag = arr[(rand() % (R - L + 1)) + L]; // 3.0
+		//std::cout << (R - L + 1) << " " << r << " " << flag << std::endl;
+		// partition
+		std::vector<int> bound = partition(flag, arr, L, R);
+		// recursion
+		quickSort(arr, L, bound[0]);
+		quickSort(arr, bound[1], R);
+	}
+
+	std::vector<int> partition(int flag, int *arr, int L, int R) {
+		int i = L; // Notes: start from L, not 0
+		int l = L - 1; 
+		int r = R + 1;
+
+		while (i < r) {
+			if (arr[i] < flag) {
+				swap(arr, i++, ++l);
+			} else if (arr[i] > flag) {
+				swap(arr, i, --r);
+			} else {
+				i++;
+			}
+		}
+		return {l, r};
+	}
+};
+```
+
+### Notes
+
+- 一定要特别注意边界条件；
+- 每次遍历的的起始、终止条件；
