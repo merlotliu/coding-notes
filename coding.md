@@ -473,7 +473,7 @@ void netherlandFlag(int num, int *arr, int len) {
 #include <time.h>
 #include <iostream>
 
-class QuickSort{
+class QuickSort {
 public:
 	void sort(int *arr, int len) {
 		if (arr == nullptr || len < 2) {
@@ -502,20 +502,20 @@ private:
 	}
 
 	std::vector<int> partition(int flag, int *arr, int L, int R) {
-		int i = L; // Notes: start from L, not 0
-		int l = L - 1; 
-		int r = R + 1;
+		// Notes: start from L, not 0
+		int less = L - 1; 
+		int more = R + 1;
 
-		while (i < r) {
-			if (arr[i] < flag) {
-				swap(arr, i++, ++l);
-			} else if (arr[i] > flag) {
-				swap(arr, i, --r);
+		while (L < more) {
+			if (arr[L] < flag) {
+				swap(arr, L++, ++less);
+			} else if (arr[L] > flag) {
+				swap(arr, L, --more);
 			} else {
-				i++;
+				L++;
 			}
 		}
-		return {l, r};
+		return {less, more};
 	}
 };
 ```
