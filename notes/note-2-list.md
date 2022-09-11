@@ -1,8 +1,9 @@
 # 链表
 
+## 链表解题技巧
 
-
-
+- 额外的数据结构（哈希表）；
+- 快慢指针；
 
 ## 反转链表
 
@@ -114,3 +115,52 @@ DoubleLinkedNode* LinkedList::reverseDoubleLinkedList(DoubleLinkedNode *head) {
 - head1->val == head2->val：打印数据，两个指针同时向后移动一步；
 - head1->val < head2->val：head1指针同时向后移动一步；
 - head1->val > head2->val：head2指针同时向后移动一步；
+
+```cpp
+void LinkedList::printCommonPart(LinkedNode *head1, LinkedNode *head2) {
+	if (head1 == nullptr || head2 == nullptr) {
+		return;
+	}
+	while (head1 && head2) {
+		if (head1->val == head2->val) {
+			std::cout << head1->val << " ";
+			head1 = head1->next;
+			head2 = head2->next;
+		}
+		else if (head1->val < head2->val) {
+			head1 = head1->next;
+		}
+		else {
+			head2 = head2->next;
+		}
+	}
+	std::cout << std::endl;
+	return;
+}
+```
+
+
+
+## 判断链表是否回文
+
+要求：时间辅助度O(N)，空间复杂度O(1)
+
+### 方法1：栈（不考虑空间复杂度）
+
+1. 遍历一次链表，将节点地址依次压栈；
+2. 再此遍历链表，每遍历一个节点，与栈顶元素比对，相等则栈顶元素出栈。
+3. 如果直到链表结束和栈空元素都相等，则为回文，中间只要有一个不相等，返回false。
+
+```
+
+```
+
+
+
+# 面试&笔试
+
+在面试和笔试中，对算法的要求应有所区分。
+
+在笔试中，题量多时间少，我们要尽量采取写出容易想到并且时间复杂度符合要求的算法，通常可以以空间换时间。
+
+而在面试中的题，通常难度更小，为了给面试官留下深刻的影响，应尽量写出低时间复杂度，低空间复杂度，能体现代码水平的代码。

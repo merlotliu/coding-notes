@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.1684
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sort", "Sort\Sort.vcxproj", "{062C8057-5EC5-4288-820A-98DB414E994E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Linklist", "Linklist\Linklist.vcxproj", "{213715B4-C2F1-4FC3-AEB4-B22C1ED470BE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LinkedList", "List\List.vcxproj", "{213715B4-C2F1-4FC3-AEB4-B22C1ED470BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
