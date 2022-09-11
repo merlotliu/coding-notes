@@ -712,25 +712,265 @@ T(N) =  T(N/2) + T(N/4) + T(N/8) + ... ... = O(N)
 
 ### 优先级队列
 
+仍然为堆结构。
 
+已知一个几乎有序的数组，几乎有序是指，如果把数组排好序的话，每个元素移动的距离隔离不超过k，并且k相对于数组来说比较小。请选择一个合适的排序算法针对这组数据进行排序。
+
+我们可以：
+
+- 构建一个小根堆，将前k+1个数添加进去；
+- 弹出堆顶元素，添加数组新元素，重复此操作，直至数组末尾；
+- 将堆中所有元素依次弹出，数组有序；
+
+```cpp
+void sortDistanceLessK(int *arr, int len, int k) {
+	std::priority_queue<int, std::vector<int>, std::greater<int>> q;
+	int i = 0;
+	for (; i <= std::min(k, len); i++) {
+		q.push(arr[i]);
+	}
+	int j = 0;
+	while (i < len) {
+		arr[j++] = q.top();
+		q.pop();
+		q.push(arr[i++]);
+	}
+	while (!q.empty()) {
+		arr[j++] = q.top();
+		q.pop();
+	}
+}
+```
+
+#### Notes
+
+- c++自带的优先级队列 priority_queue ，默认以大根堆存在，相当于传入 std::less<> 比较器；
+- 传入 std::greater<> 表示构建小根堆；
+
+### 数组扩容的策略
+
+成倍扩容，即原来为 n，扩容为2*你，并将数组拷贝。
 
 ## 比较器
 
+- 重载比较运算符；
+- 帮助类这些复杂结构进行排序；
+
+在 c++中，内置了 qsort 的方法帮助排序，而 qsort 的第四个参数就是所谓的比较器。
+
+比较器的函数签名等于如下形式：`int cmp(const void *a, const void *b)`。
+
+- 返回-1，第一个参数在前面；
+- 返回1，第二个参数在前面；
+- 返回0，无所谓谁前谁后；
+- 参数表的顺序就是原来数组的前后顺序；
+- 当第一个参数a小于b时（此时a本来就在b的前面），返回-1，则为升序；返回1（将小数放在后面了），则为降序；
+
+```cpp
+#pragma once
+#include <string>
+
+class Student {
+public:
+	Student(){}
+	Student(std::string name, int no, int age): _name(name), _no(no), _age(age) {}
+
+	void set(std::string name, int no, int age) {
+		_name = name;
+		_no = no;
+		_age = age;
+	}
+public:
+	std::string _name;
+	int _no;
+	int _age;
+};
+
+class Comp{
+public:
+	static void sort(int *arr, int len, int(*cmp)(const void*, const void*)) {
+		qsort(arr, len, sizeof(int), cmp);
+	}
+
+	static void sortByDescendingOrder(int *arr, int len) {
+		qsort(arr, len, sizeof(int), Comp::less);
+	}
+
+	static void sortByAscendingOrder(int *arr, int len) {
+		qsort(arr, len, sizeof(int), Comp::greater);
+	}
+
+	static void studentSortByAgeAscendingOrder(Student *stus, int len) {
+		qsort(stus, len, sizeof(Student), Comp::studentAgeGreater);
+	}
+
+	static int less(const void *a, const void *b) {
+		// a < b 小的时候返回 1，即为降序
+		const int arg1 = *static_cast<const int*>(a);
+		const int arg2 = *static_cast<const int*>(b);
+		
+		/*if (arg1 < arg2) return 1;
+		if (arg1 > arg2) return -1;
+		return 0;*/
+		return (arg1 < arg2) - (arg1 > arg2);
+	}
+
+	static int greater(const void *a, const void *b) {
+		// a < b 小的时候返回 -1，即为升序
+		const int arg1 = *static_cast<const int*>(a);
+		const int arg2 = *static_cast<const int*>(b);
+		/*if (arg1 < arg2) return -1;
+		if (arg1 > arg2) return 1;
+		return 0;*/
+		return (arg1 > arg2) - (arg1 < arg2);
+		//return (*static_cast<const int*>(a) - *static_cast<const int*>(b)); 
+		// 存在 INT_MIN 时会出错
+	}
+	
+	static int studentAgeGreater(const void *a, const void *b) {
+		// 返回-1，第一个参数在前面
+		// 返回1，第二个参数在前面
+		// 参数表的顺序就是原来数组的前后顺序
+
+		// 年龄升序
+		const Student *stu1 = (static_cast<const Student*>(a));
+		const Student *stu2 = (static_cast<const Student*>(b));
+		if (stu1->_age < stu2->_age) {
+			return -1;
+		}
+		if (stu1->_age > stu2->_age) {
+			return 1;
+		}
+		// 如果年龄一样 学号小的在后面
+		if (stu1->_no < stu2->_no) {
+			return 1;
+		}
+		if (stu1->_no > stu2->_no) {
+			return -1;
+		}
+		return 0;
+		//return (arg1 > arg2) - (arg1 < arg2);
+	}
+
+	static void printStudents(Student *stus, int len) {
+		if (stus == nullptr) {
+			return;
+		}
+		for (int i = 0; i < len; i++) {
+			std::cout << stus[i]._name << " " << stus[i]._no << " " << stus[i]._age << std::endl;
+		}
+		std::cout << std::endl;
+	}
+};
+```
 
 
 
+## 桶排序（计数排序）
 
-## 桶排序
+对于员工年龄的排序。
 
+由于员工年龄的大小是有大概的一个范围的（0-200），我们可以使用数组下标作为年龄，开辟一个长度201的数组，遍历员工年龄，出现对应的年龄则对应位置++，最后遍历该数组，打印员工年龄即可。
 
+计数排序的时间复杂度为O(n)。
 
-
+但其应用范围并不是很广，因为每一个计数排序算法，都是基于数据状况的，我们需要对特定问题做特定分析，修改代码后才能得到合适的解决方案。比如我们不对年龄进行排序了，而是对星期几进行排序，那么我们仅需要7个桶即可计数。
 
 ## 基数排序
 
+对一组数进行排序（十进制、三进制......）。
 
+- 找出数组中最大的数，并计算其位数，该位数即为后面出入桶的次数；
+- 准备与进制等长的数组记录词频（十进制为10，三进制为3），并处理成前缀和的形式；
+  - 前缀和的形式，即 i 位置的值为 0-i 位置的值的总和；
+- 准备需要排序数据等长的辅助数组，帮助出入桶；
 
+```cpp
+#pragma once
+#include <iostream>
 
+#include "ISort.h"
+
+class RadixSort : public ISort {
+public:
+	void sort(int *arr, int len) {
+		if (arr == nullptr || len < 2) {
+			return;
+		}
+		// get max bit
+		int bits = getBits(getMax(arr, 0, len-1));
+		radixSort(arr, 0, len - 1, bits);
+	}
+
+	void radixSort(int *arr, int L, int R, int bits, int radix = 10) {
+		int *help = new int[R - L + 1]; // 辅助数组
+		for (int bit = 1; bit <= bits; bit++) { // 最大位为几出入桶几次
+			//std::cout << "Bit : " << bit << std::endl;
+			int *count = new int[radix](); // 统计词频
+			// 遍历arr以统计词频
+			for (int i = L; i <= R; i++) {
+				int bit_num = gitBitNum(arr[i], bit, radix);
+				count[bit_num]++;
+			}
+			// 遍历count处理成前缀和
+			for (int i = 1; i < radix; i++) {
+				count[i] += count[i - 1];
+				//std::cout << count[i] << " ";
+			}
+			//std::cout << std::endl;
+			// 为满足先进先出,从后往前遍历原数组，将数据填在count前缀和得出的辅助数组位置
+			for (int i = R; i >= L; i--) {
+				int bit_num = gitBitNum(arr[i], bit, radix);
+				help[--count[bit_num]] = arr[i];
+			}
+			// 复制回原数组以保存该次处理结果
+			for (int i = L, j = 0; i <= R; i++, j++) {
+				arr[i] = help[j];
+				//std::cout << arr[i] << " ";
+			}
+			//std::cout << std::endl;
+			delete[] count;
+		}
+		delete[] help;
+		return;
+	}
+
+	int getMax(int *arr, int L, int R) {
+		int max_index = 0;
+		for (int i = L; i <= R; i++) {
+			max_index = arr[max_index] < arr[i] ? i : max_index;
+		}
+		return arr[max_index];
+	}
+
+	// 获取数字的位数
+	int getBits(int num, int radix = 10) {
+		int res = 0;
+		while (num > 0) {
+			num /= radix;
+			res++;
+		}
+		return res;
+	}
+
+	// 获取bit位上的数字
+	// 1 个位
+	// 2 十位
+	// ...
+	int gitBitNum(int num, int bit, int radix = 10) {
+		int res = 0;
+		while(bit-- > 0) {
+			res = num % radix;
+			num /= radix;
+		}
+		return res;
+	}
+};
+```
+
+#### Notes
+
+- 目前该版本仅支持正数的排序，负数一定报错。
 
 
 
