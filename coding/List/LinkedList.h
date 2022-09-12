@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 // single linked list
 class ListNode {
@@ -23,18 +24,28 @@ public:
 
 class LinkedList {
 public:
-	//
+	// reverse list
 	ListNode* reverseWithStack(ListNode *head);
 	ListNode* reverse(ListNode *head);
-	//
 	DoubleLinkedNode* reverseDoubleLinkedList(DoubleLinkedNode *head);
-	//
-	void printCommonPart(ListNode *head1, ListNode *head2);
-
+	// print commom part
+	int printCommonPart(ListNode *head1, ListNode *head2);
+	// palindrome list
 	bool isPalindromeListWithStack(ListNode *head);
-
+	bool isPalindromeListWithStackAndTwoPoints(ListNode *head);
+	bool isPalindromeListWithTwoPoints(ListNode *head);
+	// list partition with pivot
+	ListNode* partitionWithPivotAndArray(ListNode *head, int pivot);
+	ListNode* partitionWithPivot(ListNode *head, int pivot);
+	// copy list with random
+	ListNode* copyListWithRandom(ListNode *head);
+	// find first intersection between two lists
+	ListNode* findFirstIntersection(ListNode *head1, ListNode *head2);
 public:
 	ListNode* generateList(int *arr, int len);
+	ListNode* generateList(std::vector<int> &arr);
+	
+	void swap(ListNode *a, ListNode *b);
 
 public:
 	LinkedList();

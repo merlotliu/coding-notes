@@ -151,9 +151,248 @@ void LinkedList::printCommonPart(LinkedNode *head1, LinkedNode *head2) {
 2. 再此遍历链表，每遍历一个节点，与栈顶元素比对，相等则栈顶元素出栈。
 3. 如果直到链表结束和栈空元素都相等，则为回文，中间只要有一个不相等，返回false。
 
+```cpp
+bool LinkedList::isPalindromeListWithStack(ListNode *head) {
+	if (head == nullptr) return false;
+	if (head->next == nullptr) return true;
+	// push into stack
+	std::stack<ListNode*> stk;
+	ListNode *cur = head;
+	while (cur) {
+		stk.push(cur);
+		cur = cur->next;
+	}
+	// pop out stack & compare
+	cur = head;
+	while (!stk.empty()) {
+		if (cur->val != stk.top()->val) return false;
+		cur = cur->next;
+		stk.pop();
+	}
+	return true;
+}
 ```
 
+### 方法2：快慢指针 & 栈
+
+相对于方法1节省一半的空间，但时间复杂度和空间复杂度不变。
+
+1. 快慢指针，快指针一次走两步，慢指针一次走一步。第一次快指针遍历结束时，慢指针应到达中间位置（奇数时到达中间位置，偶数时向上取整的位置），记录当前慢指针的位置；
+2. 慢指针继续移动，并依次将节点指针添加进栈；
+3. 依次出栈并重新遍历链表，直至栈空；
+4. 遍历过程中出现不相同的情况则为false，反之为true。
+
+```cpp
+bool LinkedList::isPalindromeListWithStackAndTwoPoints(ListNode *head) {
+	if (head == nullptr) return false;
+	if (head->next == nullptr) return true;
+	// find middle position
+	ListNode *slow = head;
+	ListNode *fast = head->next;
+	while (fast != nullptr && fast->next != nullptr) {
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	if (fast != nullptr) slow = slow->next; // even
+	// push into stack
+	std::stack<ListNode*> stk;
+	while (slow != nullptr) {
+		stk.push(slow);
+		slow = slow->next;
+	}
+	// pop out stack & compare
+	while (!stk.empty()) {
+		if (head->val != stk.top()->val) return false;
+		stk.pop();
+		head = head->next;
+	}
+	return true;
+}
 ```
+
+#### Notes
+
+特别注意，奇数和偶数情况下的指针定位。
+
+如果要满足，奇数时到达中间位置，偶数时向上取整的位置。我们应该在快指针遍历完之后，判断是否为偶数，可以通过快指针是否为nullptr判断，然后偶数情况下慢指针先往后移动一步，然后在开始遍历剩下部分入栈。
+
+### 方法3：快慢指针 & 反转后半链表
+
+该方法，时间复杂度仍为O(N)，空间复杂度降低为O(1)。
+
+1. 快慢指针，快指针一次走两步，慢指针一次走一步。第一次快指针遍历结束时，慢指针应到达中间位置（奇数时到达中间位置，偶数时向**下**取整的位置），记录当前慢指针的位置（记为mid）；
+2. 从慢指针到末尾的位置反转，并记录末尾的位置（记为tail）；
+3. 从两端开始遍历，左边是从head，右边从tail。奇数情况下都会遍历到mid，偶数情况下，当左边遍历到mid，即遍历完成。
+   1. 遍历过程中，一旦出现不一样的值，即false，反之true。
+
+```cpp
+bool LinkedList::isPalindromeListWithTwoPoints(ListNode *head) {
+	if (head == nullptr) return false;
+	if (head->next == nullptr) return true;
+	// find middle position
+	ListNode *slow = head;
+	ListNode *fast = head->next;
+	while (fast != nullptr && fast->next != nullptr) {
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	ListNode *mid = slow;
+	// reverse
+	fast = slow->next;
+	ListNode *tail = LinkedList::reverse(slow->next);
+	fast->next = mid;
+	mid->next = nullptr;
+	// traverse & compare
+	bool flag = true;
+	slow = head;
+	fast = tail;
+	while (slow != mid) {
+		if (slow->val != fast->val) {
+			flag = false;
+			break;
+		}
+		slow = slow->next;
+		fast = fast->next;
+	}
+	// odd : the same node
+	// even : the last middle node
+	if (slow->val != fast->val) flag = false;
+	// reverse back
+	LinkedList::reverse(tail);
+
+	return flag;
+}
+```
+
+#### Notes
+
+其中，反转后半部分链表的函数，即为上文的反转单链表算法。再返回之前需要把链表复原。
+
+
+
+## 链表划分
+
+将单向链表值划分为左边小、中间相等、右边大的形式。中间值为pivot划分值。
+
+要求：调整之后节点的相对次序不变，时间复杂度不高于O(N)，空间复杂度不高于O(1)。
+
+### 方法1：数组 & 快排
+
+整体思路就是，遍历一遍链表，把节点存入数组，对数组快排，然后再遍历数组，生成将节点重新连接。
+
+该方法，**时间复杂度为O(N*logN)，空间复杂度为O(N)，且会改变相对次序。**
+
+但最容易想到和实现。
+
+```cpp
+ListNode* LinkedList::partitionWithPivotAndArray(ListNode *head, int pivot) {
+	if (head == nullptr || head->next == nullptr) return head;
+	// push into array
+	ListNode *cur = head;
+	std::vector<ListNode*> arr;
+	while (cur != nullptr) {
+		arr.push_back(cur);
+		cur = cur->next;
+	}
+	// partition
+	int less = -1;
+	int more = (int)arr.size();
+	for (int i = 0; i < more; ) {
+		if (arr[i]->val < pivot) {
+			swap(arr[++less], arr[i++]);
+		} else if (arr[i]->val > pivot) {
+			swap(arr[--more], arr[i]);
+		} else {
+			i++;
+		}
+	}
+	// rejoint
+	int i = 1;
+	for (; i < (int)arr.size(); i++) {
+		arr[i - 1]->next = arr[i];
+	}
+	arr[i-1]->next = nullptr;
+	return arr[0];
+}
+
+void LinkedList::swap(ListNode *a, ListNode *b) {
+	ListNode tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+```
+
+### 方法2：多个指针
+
+主要是使用6个指针记录3个部分的头、尾位置。
+
+**在判定完一个节点属于3个部分的哪个部分后：**
+
+- 如果是当前这部分的第一个节点：将该部分头部head和tail的位置均赋值为该节点；
+- 如果不是第一个节点，将该部分尾部tail的next指向当前节点，tail在移动到该节点；
+
+**三部分连接：**
+
+- 第1部分存在：
+  - 第2部分存在：1尾部连接2头部；
+  - 第2部分不存在：1尾部连接3头部；
+- 不论第一部分存在与否：
+  - 第2部分存在：2尾部连接3头部；
+
+**判断头节点：**
+
+- 返回less、pivot和more中不为空，且在前面的指针（即less不为空返回less，否则pivot不为空返回pivot，否则才返回more）。
+
+```cpp
+ListNode* LinkedList::partitionWithPivot(ListNode *head, int pivot) {
+	if (head == nullptr || head->next == nullptr) return head;
+	ListNode *less_head, *less_tail, *pivot_head, *pivot_tail, *more_head, *more_tail;
+	less_head = less_tail = pivot_head = pivot_tail = more_head = more_tail = nullptr;
+	// partition
+	ListNode *cur = head;
+	while (cur) {
+		if (cur->val < pivot) {
+			if (less_head == nullptr) {
+				less_head = less_tail = cur;
+			} else {
+				less_tail->next = cur;
+				less_tail = cur;
+			}
+		} else if (cur->val == pivot) {
+			if (pivot_head == nullptr) {
+				pivot_head = pivot_tail = cur;
+			}
+			else {
+				pivot_tail->next = cur;
+				pivot_tail = cur;
+			}
+		} else {
+			if (more_head == nullptr) {
+				more_head = more_tail = cur;
+			}
+			else {
+				more_tail->next = cur;
+				more_tail = cur;
+			}
+		}
+		cur = cur->next;
+	}
+	// joint
+	if (less_head != nullptr) {
+		less_tail->next = pivot_head != nullptr ? pivot_head : more_head;
+	}
+	if (pivot_head != nullptr) {
+		pivot_tail->next = more_head;
+	}
+	// final head
+	head = less_head ? less_head : (pivot_head ? pivot_head : more_head);
+	return head;
+}
+```
+
+#### Notes
+
+注意处理，小于部分、等于部分、大于部分有缺失的情况。
 
 
 

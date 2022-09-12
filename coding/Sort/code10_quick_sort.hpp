@@ -49,4 +49,23 @@ private:
 		}
 		return {less, more};
 	}
+
+	std::vector<int> partition(int flag, std::vector<int> &arr, int L, int R) {
+		// Notes: start from L, not 0
+		int less = L - 1;
+		int more = R + 1;
+
+		while (L < more) {
+			if (arr[L] < flag) {
+				swap(arr, L++, ++less);
+			}
+			else if (arr[L] > flag) {
+				swap(arr, L, --more);
+			}
+			else {
+				L++;
+			}
+		}
+		return { less, more };
+	}
 };

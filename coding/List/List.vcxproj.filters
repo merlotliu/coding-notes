@@ -21,18 +21,27 @@
     <ClCompile Include="LinkedList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="code02_print_common_part.h">
-      <Filter>头文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LinkedList.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="code03_palindrome_list.h">
+    <ClInclude Include="code01_reverse_list.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="code01_reverse_list.hpp">
+    <ClInclude Include="code02_print_common_part.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code03_palindrome_list.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code04_pivot_list.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code06_find_first_intersection.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code05_copy_list_with_random.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

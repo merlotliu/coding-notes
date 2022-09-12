@@ -124,14 +124,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="code02_print_common_part.h" />
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code01_reverse_list.hpp" />
+    <ClInclude Include="code02_print_common_part.hpp" />
+    <ClInclude Include="code04_pivot_list.hpp" />
+    <ClInclude Include="code05_copy_list_with_random.hpp" />
+    <ClInclude Include="code06_find_first_intersection.hpp" />
     <ClInclude Include="LinkedList.h" />
-    <ClInclude Include="code03_palindrome_list.h" />
+    <ClInclude Include="code03_palindrome_list.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
