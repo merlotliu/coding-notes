@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include <iostream>
+
+class ListRandomNode;
 
 // single linked list
 class ListNode {
@@ -38,13 +41,17 @@ public:
 	ListNode* partitionWithPivotAndArray(ListNode *head, int pivot);
 	ListNode* partitionWithPivot(ListNode *head, int pivot);
 	// copy list with random
-	ListNode* copyListWithRandom(ListNode *head);
+	ListRandomNode* copyListWithRandomByMap(ListRandomNode *head);
+	ListRandomNode* copyListWithRandom(ListRandomNode *head);
 	// find first intersection between two lists
 	ListNode* findFirstIntersection(ListNode *head1, ListNode *head2);
 public:
 	ListNode* generateList(int *arr, int len);
 	ListNode* generateList(std::vector<int> &arr);
-	
+	ListRandomNode* generateListWithRandom(int *arr, int len);
+
+	void printListWithRandom(ListRandomNode *head);
+
 	void swap(ListNode *a, ListNode *b);
 
 public:

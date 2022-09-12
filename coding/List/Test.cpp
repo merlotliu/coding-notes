@@ -6,6 +6,7 @@
 #include "code02_print_common_part.hpp"
 #include "code03_palindrome_list.hpp"
 #include "code04_pivot_list.hpp"
+#include "code05_copy_list_with_random.hpp"
 
 void printList(ListNode *head) {
 	while (head) {
@@ -77,6 +78,7 @@ void isPalindromeList() {
 	std::cout << "Palindrome List (Stack & 2 Points) : " << (list.isPalindromeListWithStackAndTwoPoints(head2) ? "True" : "False") << std::endl;
 	std::cout << "Palindrome List (2 Points) : " << (list.isPalindromeListWithTwoPoints(head2) ? "True" : "False") << std::endl;
 	//printList(head2);
+	
 	std::cout << std::endl;
 }
 
@@ -87,16 +89,50 @@ void pivotList() {
 	int pivot = arr[rand() % len];
 
 	LinkedList list;
+
+	std::cout << "List Partition With Pivot And Array <" << pivot << "> :" << std::endl;
 	ListNode *head = list.generateList(arr, len);
 	printList(head);
-
 	head = list.partitionWithPivotAndArray(head, pivot);
-	std::cout << "List Partition With Pivot And Array <" << pivot << "> :" << std::endl;
 	printList(head);
 
-	head = list.partitionWithPivot(head, pivot);
 	std::cout << "List Partition With Pivot By Several Points <" << pivot << "> :" << std::endl;
+	head = list.generateList(arr, len);
 	printList(head);
+	head = list.partitionWithPivot(head, pivot);
+	printList(head);
+
+	std::cout << std::endl;
+}
+
+void copyListWithRandom() {
+	std::cout << "Copy List With Random" << std::endl;
+	int arr[] = { 4, 3, 2, 1 };
+	int len = sizeof(arr) / sizeof(int);
+
+	LinkedList list;
+	std::cout << "Copy List With Random By Map" << std::endl;
+	ListRandomNode *head = list.generateListWithRandom(arr, len);
+	std::cout << "Origin : ";
+	list.printListWithRandom(head);
+	list.copyListWithRandomByMap(head);
+	std::cout << "Copy : ";
+	list.printListWithRandom(head);
+
+	std::cout << "Copy List With Random By Next" << std::endl;
+	head = list.generateListWithRandom(arr, len);
+	std::cout << "Origin : ";
+	list.printListWithRandom(head);
+	list.copyListWithRandom(head);
+	std::cout << "Copy : ";
+	list.printListWithRandom(head);
+
+	std::cout << std::endl;
+}
+
+void findFirstIntersection() {
+
+	std::cout << std::endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -112,7 +148,13 @@ int main(int argc, char *argv[]) {
 	//isPalindromeList();
 
 	// list partition with pivot 
-	pivotList();
+	//pivotList();
+
+	// copy list with random pointers
+	//copyListWithRandom();
+
+	// find first intersection
+	findFirstIntersection();
 
 	return 0;
 }
