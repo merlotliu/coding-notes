@@ -380,8 +380,37 @@ public:
 - 判断两部分大小的时候，如果相等，则不产生小和，并且先拷贝右侧内容；
 - 如果左侧小于右侧，产生小和，右侧应该有右边界索引减去右侧当前指针索引下标再加1的数量，乘上当前左侧数，即为当前部分小和；例如：左侧为[1,3,4]，右侧为[2,5]时（合并时各部分一定是已经排好序的，这样才能确定后面有几个数比当前数大），对于1来说，右侧当前索引为0，边界索引为1，则小和为(1-0+1)*1=2；
 
-```
+```cpp
+int getSmallSum(int *arr, int l, int r) {
+	if (l == r) {
+		return 0;
+	}
+	int m = l + ((r - l) >> 1);
+	return getSmallSum(arr, l, m) + getSmallSum(arr, m + 1, r) + getPartSmallSum(arr, l, m, r);
+}
 
+int getPartSmallSum(int *arr, int l, int m, int r) {
+	int *help = new int[r - l + 1];
+	int i = 0;
+	int p1 = l;
+	int p2 = m + 1;
+	int res = 0;
+	while (p1 <= m && p2 <= r) {
+		res += arr[p1] < arr[p2] ? (r - p2 + 1) * arr[p1] : 0;
+		help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
+	}
+	while (p1 <= m) {
+		help[i++] = arr[p1++];
+	}
+	while (p2 <= r) {
+		help[i++] = arr[p2++];
+	}
+	for (int j = l, i = 0; j <= r; ) {
+		arr[j++] = help[i++];
+	}
+	delete[] help;
+	return res;
+}
 ```
 
 
