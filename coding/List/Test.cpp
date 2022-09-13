@@ -7,9 +7,13 @@
 #include "code03_palindrome_list.hpp"
 #include "code04_pivot_list.hpp"
 #include "code05_copy_list_with_random.hpp"
+#include "code06_find_first_intersection.hpp"
 
 void printList(ListNode *head) {
+	std::unordered_set<ListNode*> set;
 	while (head) {
+		if (set.find(head) != set.end()) break;
+		set.insert(head);
 		std::cout << head->val << (head->next ? "->" : " ");
 		head = head->next;
 	}
@@ -130,8 +134,51 @@ void copyListWithRandom() {
 	std::cout << std::endl;
 }
 
-void findFirstIntersection() {
+void hasCycle() {
+	std::cout << "List With Cycle" << std::endl;
+	int arr[] = { 1, 2, 3, 4, 5, 6};
+	int len = sizeof(arr) / sizeof(int);
 
+	LinkedList list;
+	ListNode *head = list.generateList(arr,len);
+	ListNode *node = list.hasCycleBySet(head);
+	std::cout << "Has Cycle By Set : " << (node ? "True" : "False" ) << std::endl;
+	node = list.hasCycle(head);
+	std::cout << "Has Cycle By 2 Pointers: " << (node ? "True" : "False") << std::endl;
+
+	ListNode *cur = head;
+	ListNode *tmp = nullptr;
+	while (cur->next) {
+		if (cur->val == 3) tmp = cur;
+		cur = cur->next;
+	}
+	cur->next = tmp;
+	node = list.hasCycleBySet(head);
+	std::cout << "Has Cycle By Set : " << (node ? "True" : "False" ) << std::endl;
+	node = list.hasCycle(head);
+	std::cout << "Has Cycle By 2 Pointers: " << (node ? "True" : "False") << std::endl;
+
+	std::cout << std::endl;
+}
+
+void findFirstIntersection() {
+	ListNode *tail1 = new ListNode(5, nullptr);
+	ListNode *p1 = new ListNode(4, tail1);
+	p1 = new ListNode(3, p1);
+	p1 = new ListNode(2, p1);
+	ListNode *head1 = new ListNode(1, p1);
+	tail1->next = head1->next->next;
+
+	p1 = new ListNode(6, head1->next);
+	ListNode *head2 = new ListNode(7, p1);
+
+	printList(head1);
+	printList(head2);
+
+	LinkedList list;
+	ListNode *node = list.findFirstIntersection(head1, head2);
+
+	std::cout << node->val << std::endl;
 	std::cout << std::endl;
 }
 
@@ -152,6 +199,9 @@ int main(int argc, char *argv[]) {
 
 	// copy list with random pointers
 	//copyListWithRandom();
+
+	// has or not cycle
+	// hasCycle();
 
 	// find first intersection
 	findFirstIntersection();

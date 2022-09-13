@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <unordered_set>
 
 class ListRandomNode;
 
@@ -44,7 +45,15 @@ public:
 	ListRandomNode* copyListWithRandomByMap(ListRandomNode *head);
 	ListRandomNode* copyListWithRandom(ListRandomNode *head);
 	// find first intersection between two lists
+	
 	ListNode* findFirstIntersection(ListNode *head1, ListNode *head2);
+
+	ListNode* hasCycleBySet(ListNode *head);
+	ListNode* hasCycle(ListNode *head);
+
+	ListNode* findFirstIntersectionWithNoLoop(ListNode *head1, ListNode *head2);
+	ListNode* findFirstIntersectionWithNoLoopEx(ListNode *head1, ListNode *head2);
+	ListNode* findFirstIntersectionWithLoops(ListNode *head1, ListNode *loop1, ListNode *head2, ListNode *loop2);
 public:
 	ListNode* generateList(int *arr, int len);
 	ListNode* generateList(std::vector<int> &arr);

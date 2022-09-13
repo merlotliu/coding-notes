@@ -47,7 +47,7 @@ ListRandomNode* LinkedList::copyListWithRandom(ListRandomNode *head) {
 	// assign random pointers
 	cur = head;
 	while (cur != nullptr) {
-		cur->next->random = cur->random->next;
+		cur->next->random = cur->random ? cur->random->next : nullptr;
 		cur = cur->next->next;
 	}
 	// split
