@@ -2,7 +2,7 @@
 
 ## 基础
 
-### 节点结构
+### 1 节点结构
 
 含有三個成员变量，一个值域，两个指针域。
 
@@ -18,7 +18,7 @@ public:
 };
 ```
 
-### 二叉树遍历
+### 2 二叉树遍历
 
 #### 递归
 
@@ -168,32 +168,129 @@ void BinaryTree::postorderTraversal(TreeNode *root) {
 
 
 
-### 直观打印二叉树
+### 3 直观打印二叉树
 
 
 
 
 
-### 二叉树宽度优先遍历
+### 4 二叉树宽度优先遍历
 
 对于二叉树的宽度优先遍历，需要用到队列。首先将根节点加入队列，然后进行重复的迭代：
 
 - 出队列，数据处理；
 - 依次将左、右加入队列（如果存在）；
 
-
+```cpp
+void BinaryTree::levelTraversal(TreeNode *root) {
+	if (root == nullptr) return;
+	std::queue<TreeNode*> que;
+	que.push(root);
+	while (!que.empty()) {
+		TreeNode *cur = que.front();
+		std::cout << cur->val << " ";
+		que.pop();
+		if (cur->left) que.push(cur->left);
+		if (cur->right) que.push(cur->right);
+	}
+	return;
+}
+```
 
 
 
 #### 二叉树最大宽度
 
+获取二叉树的最大宽度，要求我们知道每一层的宽度并比较大小。
 
+##### 方法1：哈希表
 
+准备几个变量，分别记录当前是第几层、当前层出现的节点总数、当前最大的宽度（初始值为INT_MIN），在使用哈希表记录<当前节点, 层数>。（约定根节点为第一层）
 
+- 取出队首元素，通过map取得节点层数，判断是否与当前层一致：
+  - 相同：该层计数++；
+  - 不同：说明已经进入下一层，结算上一层计数（与max比较取大者），因为已经弹出了下一层的第一个元素了，所以计数为1，且将当前层数++；
+- 依次将左孩子，右孩子进队列，并添加入map，层数为当前层+1；
 
+跳出循环之后，在处理最后一层的宽度和当前最大值的比较即可。
 
+```cpp
+int BinaryTree::getMaxWidthByMap(TreeNode *root) {
+	if (root == nullptr) return 0;
+	std::queue<TreeNode*> que;
+	que.push(root);
+	std::unordered_map<TreeNode*, int> ref;
+	int cur_level = 1;
+	ref.insert({ root, 1 });
+	int max = INT_MIN;
+	int cur_count = 0;
+	while (!que.empty()) {
+		TreeNode *cur = que.front();
+		que.pop();
+		if (ref[cur] == cur_level) {
+			cur_count++;
+		}
+		else {
+			max = max > cur_count ? max : cur_count;
+			cur_count = 1;
+			cur_level++;
+		}
+		if (cur->left) {
+			que.push(cur->left);
+			ref.insert({ cur->left, cur_level + 1 });
+		}
+		if (cur->right) {
+			que.push(cur->right);
+			ref.insert({ cur->right, cur_level + 1 });
+		}
+	}
+	max = max > cur_count ? max : cur_count;
+	return max;
+}
+```
 
+##### 方法2：仅使用有限几个变量
 
+同样的，如果要计算宽度，我们需要知道每一层的结束和开始。
+
+使用几个变量，记录当前层的最后一个节点（初始head）、下一层的最后一个节点（初始null）、当前层的节点数（初始0）以及当前最大的宽度（初始最小值）。在宽度优先遍历的基础之上：
+
+- 弹出队首元素；
+- 添加左右孩子时，更新下一层的最后一个节点；
+- 判断当前节点是否为当前层最后一个元素：
+  - 不是：当前节点数++；
+  - 是：当前节点数++，与max比较，当前层最后一个节点赋值为下一层最后一个节点；
+
+```cpp
+int BinaryTree::getMaxWidth(TreeNode *root) {
+	if (root == nullptr) return 0;
+	std::queue<TreeNode*> que;
+	que.push(root);
+	int max = INT_MIN;
+	int cur_count = 0;
+	TreeNode *cur_end = root;
+	TreeNode *next_end = nullptr;
+	while (!que.empty()) {
+		TreeNode *cur = que.front();
+		que.pop();
+		if (cur->left) {
+			que.push(cur->left);
+			next_end = cur->left;
+		}
+		if (cur->right) {
+			que.push(cur->right);
+			next_end = cur->right;
+		}
+		cur_count++;
+		if (cur == cur_end) {
+			max = max < cur_count ? cur_count : max;
+			cur_count = 0;
+			cur_end = next_end;
+		}
+	}
+	return max;
+}
+```
 
 
 

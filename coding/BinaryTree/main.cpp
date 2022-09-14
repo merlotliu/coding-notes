@@ -10,22 +10,30 @@ int main(int argc, char *argv[]) {
 	right1 = new TreeNode(3, left2, right2);
 	TreeNode *root = new TreeNode(1, left1, right1);
 
+	std::cout << "Binary Tree Traversal" << std::endl;
 	BinaryTree tree;
+	std::cout << "Binary Tree Preordered Traversal" << std::endl;
 	tree.preorderTraversalRecursion(root);
 	std::cout << std::endl;
 	tree.preorderTraversal(root);
 	std::cout << std::endl;
+	std::cout << "Binary Tree Inordered Traversal" << std::endl;
 	tree.inorderTraversalRecursion(root);
 	std::cout << std::endl;
 	tree.inorderTraversal(root);
 	std::cout << std::endl;
+	std::cout << "Binary Tree Postordered Traversal" << std::endl;
 	tree.postorderTraversalRecursion(root);
 	std::cout << std::endl;
 	tree.postorderTraversal(root);
 	std::cout << std::endl;
 
+	std::cout << "Level Traversal" << std::endl;
 	tree.levelTraversal(root);
 	std::cout << std::endl;
 
+	std::cout << "Get Max Width" << std::endl;
+	std::cout << tree.getMaxWidthByMap(root) << std::endl;
+	std::cout << tree.getMaxWidth(root) << std::endl;
 	return 0;
 }

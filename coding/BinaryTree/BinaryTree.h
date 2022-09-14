@@ -1,6 +1,9 @@
 #pragma once
+
 #include <stack>
 #include <queue>
+#include <unordered_map>
+
 #include <iostream>
 
 class TreeNode {
@@ -27,4 +30,6 @@ public:
 
 	// level traversal
 	void levelTraversal(TreeNode *root);
+	int getMaxWidthByMap(TreeNode *root);
+	int getMaxWidth(TreeNode *root);
 };
