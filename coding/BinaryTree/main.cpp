@@ -2,6 +2,7 @@
 #include "code03_level_traversal.hpp"
 
 #include "code06_full_binary_tree.hpp"
+#include "code07_avl_tree.hpp"
 
 int main(int argc, char *argv[]) {
 	TreeNode *left1 = new TreeNode(4);
@@ -45,5 +46,10 @@ int main(int argc, char *argv[]) {
 	std::cout << getTreeDepth(root) << std::endl;
 	std::cout << "Tree Nodes count : ";
 	std::cout << getNodesCount(root) << std::endl;
+
+	std::cout << "AVL" << std::endl;
+	std::cout << "Is AVL : ";
+	std::cout << (isAVL(root).is_avl ? "True" : "False") << std::endl;
+
 	return 0;
 }

@@ -292,11 +292,7 @@ int BinaryTree::getMaxWidth(TreeNode *root) {
 }
 ```
 
-## 二叉树套路
-
-对于二叉树的树形DP问题，均可采用此套路解题。所谓DP，即一个母问题可以拆解为若干子问题，且子问题与母问题同构。树型DP，即对于一棵树，可以通过左右子树的结果组成母问题的结果。
-
-以AVL树为例。
+## 二叉树相关概念
 
 ### 1 二叉搜索树（BST）
 
@@ -377,8 +373,6 @@ bool isCBT(TreeNode *root) {
 
 满二叉树：节点总数为n，树的深度为h，满足 2^h - 1 = n 的二叉树。
 
-#### 方法1：定义
-
 计算总结点数和树的深度，并比较其关系。
 
 ```cpp
@@ -405,9 +399,52 @@ bool isFBT(TreeNode *root) {
 
 空树或左右子树的高度差的绝对值不超过1，且左右子树也都是平衡二叉树。
 
+**使用套路**，判定一棵树是否为AVL树：
 
+- 判定一棵树是否为AVL，可以先判定左子树是否为AVL，在判定右子树是否为AVL，最后比较左右子树的高度即可；
+- base case ： 空树认为是AVL；
 
+```cpp
+class RetVal {
+public:
+	RetVal(bool avl, int d) : is_avl(avl), depth(d) {}
 
+public:
+	bool is_avl;
+	int depth;
+};
+
+RetVal isAVL(TreeNode *root) {
+	if (root == nullptr) return RetVal(true, 0);
+
+	RetVal left = isAVL(root->left);
+	if (!left.is_avl) return RetVal(false, left.depth);
+	RetVal right = isAVL(root->right);
+	if (!right.is_avl) return RetVal(false, right.depth);
+	
+	bool is_avl = abs(left.depth - right.depth) <= 1;
+	int max_depth = left.depth >= right.depth ? left.depth + 1 : right.depth + 1;
+	return RetVal(is_avl, max_depth);
+}
+```
+
+### 树型DP套路
+
+对于二叉树的树形DP问题，均可采用此套路解题。所谓DP，即一个母问题可以拆解为若干子问题，且子问题与母问题同构。树型DP，即对于一棵树，可以通过左右子树的结果组成母问题的结果。
+
+以获取当前树的最大深度为例：
+
+- 当前树的最大深度即为，左右子树深度大的，再+1；
+- 而左右子树，亦可是他们各自的左右子树的最大深度，再+1；
+- base case : root == null, 返回 0；
+
+**改成模板（套路）**：
+
+- 将整棵树的问题拆分成左右子树的问题：该问题需要什么？可以从左右子树获得什么？
+- 左右子树向下重复操作；
+- base case 是什么？
+- 由于是递归，需要保证从左右子树获取的信息是一样的，处理可以稍有不同；
+- 获取的信息过多时可以，定义一个class，作为返回值。
 
 ## 经典题型
 
