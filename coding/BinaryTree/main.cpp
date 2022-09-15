@@ -6,6 +6,7 @@
 #include "code07_avl_tree.hpp"
 #include "code08_find_common_ancestor.hpp"
 #include "code10_serializing_deserializing.hpp"
+#include "code11_ms_paper_folding.hpp"
 
 int main(int argc, char *argv[]) {
 	TreeNode *left1 = new TreeNode(4);
@@ -69,6 +70,16 @@ int main(int argc, char *argv[]) {
 	serializing(root, str);
 	std::cout << str << std::endl;
 	tree.preorderTraversal(deserializing(str));
+	std::cout << std::endl;
+
+	std::cout << "MS Paper Folding" << std::endl;
+	int n = 3;
+	printPaperCreaseFacing(n);
+	std::cout << std::endl;
+	printPaperFolds(1, n, true);
+	std::cout << std::endl;
+	printPaperFolds(n, true);
+	std::cout << std::endl;
 
 	return 0;
 }

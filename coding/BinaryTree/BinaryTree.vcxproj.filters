@@ -53,5 +53,8 @@
     <ClInclude Include="code10_serializing_deserializing.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code11_ms_paper_folding.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

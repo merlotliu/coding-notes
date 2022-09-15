@@ -583,9 +583,123 @@ TreeNodeP* getSuccessor(TreeNodeP *node) {
 
 对于先序遍历，重建时，依次构建根节点、左子树和右子树；
 
+```cpp
+void serializing(TreeNode *root, std::string &res) {
+	if (root == nullptr) {
+		res += "#_";
+		return;
+	}
+	res += std::to_string(root->val);
+	res += "_";
+	serializing(root->left, res);
+	serializing(root->right, res);
+}
+
+void split(std::vector<std::string> &res, std::string &str, char delim) {
+	std::stringstream ss(str);   //读取str到字符串流中
+	std::string tmp;
+	//使用getline函数从字符串流中读取,遇到分隔符时停止,和从cin中读取类似
+	//注意,getline默认是可以读取空格的
+	while (std::getline(ss, tmp, delim)) {
+		res.push_back(tmp);
+	}
+	return ;
+}
+
+TreeNode* deserializing(std::vector<std::string> &arr, int &idx) {
+	if (arr[idx] == "#") {
+		idx++;  
+		return nullptr;
+	}
+	TreeNode *root = new TreeNode(atoi(arr[idx++].c_str()));
+	root->left = deserializing(arr, idx);
+	root->right = deserializing(arr, idx);
+	return root;
+}
+
+TreeNode* deserializing(std::string &str) {
+	std::vector<std::string> res;
+	char delim = '_';
+	split(res, str, delim);
+	int idx = 0;
+	return deserializing(res, idx);
+}
+```
+
 
 
 ### 4 MS面试题：n次折纸的折痕朝向
+
+折痕从上至下的顺序：
+
+折1次：1条凹折痕，记作A；
+
+折2次：2条凹折痕，1条凸折痕（在A的上方会有1条凹折痕记作B，下方一条凸折痕记作C）；（B（凹） A（凹） C（凸））
+
+折3次：2条凹，1条凸，2条凹，2条凸（在B的上方会有一条凹折痕，下方一条凸折痕，C也是如此）；（D（凹）B（凹）E（凸） A（凹）F（凹） C（凸）G（凸））
+
+使用二叉树画出来就是：
+
+ 									A（凹）
+
+​					B（凹）						C（凸）
+
+​			D（凹）	E（凸）		F（凹）	G（凸）
+
+所以n次的情况下，即为高度为n的以上类型树的中序遍历。
+
+这颗树的特点：
+
+- 根节点和左孩子为凹；
+- 右孩子为凸；
+
+所以我们只需要按此特点构造出二叉树，再中序遍历即可。
+
+```cpp
+TreeNode* generateTree(TreeNode *cur, int n) {
+	if (n == 1) return nullptr;
+	cur->left = new TreeNode("down");
+	cur->right = new TreeNode("up");
+	generateTree(cur->left, n - 1);
+	generateTree(cur->right, n - 1);
+	return cur;
+}
+
+void inorderTraversal(TreeNode *root) {
+	if (root == nullptr) return;
+	inorderTraversal(root->left);
+	std::cout << root->val_str << " ";
+	inorderTraversal(root->right);
+}
+
+// down 凹 up 凸
+void printPaperCreaseFacing(int n) {
+	if (n < 1) return;
+	TreeNode *root = new TreeNode("down");
+	generateTree(root, n);
+	inorderTraversal(root);
+}
+```
+
+##### 更精简的版本
+
+- 在二叉树递归中需要区分左右时，可以在进入左子树时，传入区分的参数；
+
+```cpp
+void printPaperFolds(int level, int N, bool down) {
+	if (level > N) return;
+	printPaperFolds(level + 1, N, true);
+	std::cout << (down ? "down" : "up") << " ";
+	printPaperFolds(level + 1, N, false);
+}
+
+void printPaperFolds(int n, bool down) {
+	if (n < 1) return;
+	printPaperFolds(n - 1, true);
+	std::cout << (down ? "down" : "up") << " ";
+	printPaperFolds(n - 1, false);
+}
+```
 
 
 

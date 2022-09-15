@@ -13,9 +13,11 @@ class TreeNode {
 public:
 	TreeNode() : val(0), left(nullptr), right(nullptr) {}
 	TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+	TreeNode(std::string v) : val_str(v), left(nullptr), right(nullptr) {}
 	TreeNode(int v, TreeNode *l, TreeNode *r) : val(v), left(l), right(r) {}
 public:
 	int val;
+	std::string val_str;
 	TreeNode *left;
 	TreeNode *right;
 };
