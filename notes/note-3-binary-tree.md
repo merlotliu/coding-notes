@@ -450,9 +450,89 @@ RetVal isAVL(TreeNode *root) {
 
 ### 1 最低公共祖先
 
+#### 方法1：记录每个节点的父节点
+
+我们可以：
+
+- 遍历一遍二叉树，使用哈希表记录每个节点的父节点；
+- 再使用哈希表记录，从node1到根节点的路径（所有节点）；
+- 让node2向跟节点移动，直到再node1-root的路径中发现有相同节点。
+
+```cpp
+void findParent(TreeNode *root, TreeNode *parent, std::unordered_map<TreeNode*, TreeNode*> &parentMap) {
+	if (root == nullptr) return;
+	parentMap.insert({ root, parent });
+	findParent(root->left, root, parentMap);
+	findParent(root->right, root, parentMap);
+}
+
+TreeNode* findCommonAncestor(TreeNode *root, TreeNode *node1, TreeNode *node2) {
+	std::unordered_map<TreeNode*, TreeNode*> parentMap;
+	findParent(root, nullptr, parentMap);
+	
+	std::unordered_set<TreeNode*> node1_path;
+	TreeNode *cur = node1;
+	while (cur != nullptr) {
+		node1_path.insert(cur);
+		cur = parentMap[cur];
+	}
+
+	cur = node2;
+	while (cur != nullptr) {
+		if(node1_path.find(cur) != node1_path.end()) return cur;
+		cur = parentMap[cur];
+	}
+	return nullptr;
+}
+```
+
+#### 方法2：递归写法
+
+对于两个节点node1和node2，只有两种可能：
+
+- node1为node2的祖先，或者node2为node1的祖先；
+- node1和node2不是其他一个的祖先；
+
+那么在递归的过程中：
+
+- base case : 如果遇到null、node1、node2，就返回null、node1、node2；
+- 如果左右孩子都不为null，则返回当前节点；
+- 如果至少有一个为null，返回不null的那个，都为null，也会返回null；
+
+```cpp
+TreeNode* findCommonAncestorRecur(TreeNode *root, TreeNode *node1, TreeNode *node2) {
+	if (root == nullptr || root == node1 || root == node2) return root;
+
+	TreeNode *left = findCommonAncestorRecur(root->left, node1, node2);
+	TreeNode *right = findCommonAncestorRecur(root->right, node1, node2);
+
+	if (left != nullptr || right != nullptr) return root;
+	return (left == nullptr ? right : left);
+}
+```
+
 
 
 ### 2 后继节点
+
+前驱和后继的概念是基于中序遍历，对于一个节点的前驱即为中序遍历的前一个节点，后继则为中序遍历的后一个节点。
+
+对于每一个节点的后继节点，在O(N)的时间复杂度内，通过中序遍历肯定是可以得到的。
+
+那么如果在以下的二叉树节点类型情况下，能否在O(k)的时间复杂度下，找到他的后继节点？（k为当前节点到后继节点的实际距离）
+
+```
+class TreeNode {
+public:
+	TreeNode(int v) : val(v), left(nullptr), right(nullptr), parent(nullptr) {}
+
+public:
+	int val;
+	TreeNode *left;
+    TreeNode *right;
+    TreeNode *parent;
+}
+```
 
 
 

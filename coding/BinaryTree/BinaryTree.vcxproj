@@ -162,6 +162,7 @@
     <ClInclude Include="code05_completed_binary_tree.hpp" />
     <ClInclude Include="code06_full_binary_tree.hpp" />
     <ClInclude Include="code07_avl_tree.hpp" />
+    <ClInclude Include="code08_find_common_ancestor.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -44,5 +44,8 @@
     <ClInclude Include="code07_avl_tree.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code08_find_common_ancestor.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

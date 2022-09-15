@@ -3,6 +3,7 @@
 
 #include "code06_full_binary_tree.hpp"
 #include "code07_avl_tree.hpp"
+#include "code08_find_common_ancestor.hpp"
 
 int main(int argc, char *argv[]) {
 	TreeNode *left1 = new TreeNode(4);
@@ -51,5 +52,12 @@ int main(int argc, char *argv[]) {
 	std::cout << "Is AVL : ";
 	std::cout << (isAVL(root).is_avl ? "True" : "False") << std::endl;
 
+	std::cout << "Common Ancestor" << std::endl;
+	TreeNode *node1 = left1;
+	TreeNode *node2 = left2;
+	std::cout << node1->val << " & " << node2->val << " Common Ancestor : ";
+	std::cout << findCommonAncestor(root, node1, node2)->val << std::endl;
+	std::cout << node1->val << " & " << node2->val << " Common Ancestor (Recursion) : ";
+	std::cout << findCommonAncestorRecur(root, node1, node2)->val << std::endl;
 	return 0;
 }
