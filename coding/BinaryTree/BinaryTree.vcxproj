@@ -158,6 +158,10 @@
     <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="code01_binray_tree_traversal.hpp" />
     <ClInclude Include="code03_level_traversal.hpp" />
+    <ClInclude Include="code04_binary_search_tree.hpp" />
+    <ClInclude Include="code05_completed_binary_tree.hpp" />
+    <ClInclude Include="code06_full_binary_tree.hpp" />
+    <ClInclude Include="code07_avl_tree.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

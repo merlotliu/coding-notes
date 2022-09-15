@@ -32,5 +32,17 @@
     <ClInclude Include="code03_level_traversal.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code04_binary_search_tree.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code05_completed_binary_tree.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code06_full_binary_tree.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code07_avl_tree.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
