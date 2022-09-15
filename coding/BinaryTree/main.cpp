@@ -1,6 +1,8 @@
 #include "code01_binray_tree_traversal.hpp"
 #include "code03_level_traversal.hpp"
 
+#include "code06_full_binary_tree.hpp"
+
 int main(int argc, char *argv[]) {
 	TreeNode *left1 = new TreeNode(4);
 	TreeNode *right1 = new TreeNode(5);
@@ -35,5 +37,13 @@ int main(int argc, char *argv[]) {
 	std::cout << "Get Max Width" << std::endl;
 	std::cout << tree.getMaxWidthByMap(root) << std::endl;
 	std::cout << tree.getMaxWidth(root) << std::endl;
+
+	std::cout << "FBT" << std::endl;
+	std::cout << "Is FBT : ";
+	std::cout << (isFBT(root) ? "True" : "False") << std::endl;
+	std::cout << "Tree Depth : ";
+	std::cout << getTreeDepth(root) << std::endl;
+	std::cout << "Tree Nodes count : ";
+	std::cout << getNodesCount(root) << std::endl;
 	return 0;
 }
