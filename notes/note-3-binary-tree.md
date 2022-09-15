@@ -294,6 +294,10 @@ int BinaryTree::getMaxWidth(TreeNode *root) {
 
 ## 二叉树套路
 
+对于二叉树的树形DP问题，均可采用此套路解题。所谓DP，即一个母问题可以拆解为若干子问题，且子问题与母问题同构。树型DP，即对于一棵树，可以通过左右子树的结果组成母问题的结果。
+
+以AVL树为例。
+
 ### 1 二叉搜索树（BST）
 
 二叉搜索树：满足左子树的元素都小于当前节点，右子树的元素都大于当前节点的二叉树。
@@ -377,7 +381,7 @@ bool isCBT(TreeNode *root) {
 
 计算总结点数和树的深度，并比较其关系。
 
-```
+```cpp
 int getTreeDepth(TreeNode *root) {
 	if (root == nullptr) return 0;
 	int left_depth = getTreeDepth(root->left) + 1;
