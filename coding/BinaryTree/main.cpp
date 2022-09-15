@@ -59,5 +59,10 @@ int main(int argc, char *argv[]) {
 	std::cout << findCommonAncestor(root, node1, node2)->val << std::endl;
 	std::cout << node1->val << " & " << node2->val << " Common Ancestor (Recursion) : ";
 	std::cout << findCommonAncestorRecur(root, node1, node2)->val << std::endl;
+
+	std::cout << "Successor Node" << std::endl;
+
+
+
 	return 0;
 }

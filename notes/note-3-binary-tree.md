@@ -521,7 +521,9 @@ TreeNode* findCommonAncestorRecur(TreeNode *root, TreeNode *node1, TreeNode *nod
 
 那么如果在以下的二叉树节点类型情况下，能否在O(k)的时间复杂度下，找到他的后继节点？（k为当前节点到后继节点的实际距离）
 
-```
+根结点的父节点定义为null。
+
+```cpp
 class TreeNode {
 public:
 	TreeNode(int v) : val(v), left(nullptr), right(nullptr), parent(nullptr) {}
@@ -531,6 +533,46 @@ public:
 	TreeNode *left;
     TreeNode *right;
     TreeNode *parent;
+}
+```
+
+对于一个节点的后继：
+
+- 如果该节点有右树，则为右树的最左节点；
+- 如果该节点无右树，则该节点一定存在于其后继节点的左子树上；
+- 此外，整颗树的最右节点一定是无后继的（在判定是否为其后继的左子树最后会走到null）
+
+```
+class TreeNodeP {
+public:
+	TreeNodeP(int v) : val(v), left(nullptr), right(nullptr), parent(nullptr) {}
+
+public:
+	int val;
+	TreeNodeP *left;
+	TreeNodeP *right;
+	TreeNodeP *parent;
+};
+
+TreeNodeP* getSuccessor(TreeNodeP *node) {
+	if (node == nullptr) return nullptr;
+	// there is right tree
+	TreeNodeP *successor = nullptr;
+	if (node->right != nullptr) {
+		successor = node->right;
+		while (successor->left) {
+			successor = successor->left;
+		}
+		return successor;
+	}
+	// not
+	TreeNodeP *cur = node;
+	TreeNodeP *successor = cur->parent;
+	while(successor != nullptr && successor->left != cur) {
+		cur = successor;
+		successor = cur->parent;
+	}
+	return successor;
 }
 ```
 

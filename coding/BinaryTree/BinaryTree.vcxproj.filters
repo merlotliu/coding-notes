@@ -47,5 +47,8 @@
     <ClInclude Include="code08_find_common_ancestor.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code09_successor_node.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
