@@ -296,11 +296,96 @@ int BinaryTree::getMaxWidth(TreeNode *root) {
 
 ### 1 二叉搜索树（BST）
 
+二叉搜索树：满足左子树的元素都小于当前节点，右子树的元素都大于当前节点的二叉树。
+
+#### 方法1：数组判断是否升序
+
+判断一棵树是否为二叉搜索树的简单方法是，对二叉树进行一次中序遍历，并将遍历的结果存入一个数组中，遍历结束后，对数组进行升序检查，只要出现一个逆序则不是BST，反之是BST。
+
+#### 方法2：递归 & 比较前驱与后继的大小
+
+使用一个值记录前驱节点的值，到达当前节点则比较：
+
+- 前驱大：不是BST，返回；
+- 后继大：继续遍历，直到为null；
+
+base case 为 true
+
+```cpp
+int pre_val = INT_MIN;
+
+bool isBST(TreeNode *root) {
+	if (root == nullptr) return true;
+	bool left = isBST(root->left);
+	if (left == false) return false;
+	if (pre_val >= root->val) {
+		return false;
+	} else {
+		pre_val = root->val;
+	}
+	return isBST(root->right);
+}
+```
+
+
+
 ### 2 完全二叉树（CBT）
+
+从根节点到最后一个叶子节点，中间没有节点空缺的二叉树。
+
+- 有右孩子必须有左孩子；
+- 如果一个节点开始，没有右孩子或左右孩子，那么后面的节点都是叶子节点。
+
+所以判定一颗树是否为CBT，可以使用宽度优先遍历：
+
+- 当前节点有右孩子没有左孩子：false；
+- 当前节点没有孩子或没有右孩子，后面仍出现非叶子节点：false；
+
+```cpp
+bool isCBT(TreeNode *root) {
+	std::queue<TreeNode*> que;
+	que.push(root);
+	bool leaf = false;
+	while (!que.empty()) {
+		TreeNode *cur = que.front();
+		que.pop();
+		if (cur->left) {
+			que.push(cur->left);
+		}
+		if (cur->right) {
+			que.push(cur->right);
+		}
+		if ((leaf && (cur->left != nullptr || cur->right != nullptr)) 
+			|| (cur->left == nullptr && cur->right != nullptr)) {
+			return false;
+		}
+		if (cur->right == nullptr) {
+			leaf = true;
+		}
+	}
+	return true;
+}
+```
+
+
 
 ### 3 满二叉树（FBT）
 
+满二叉树：节点总数为n，树的深度为h，满足 2^h - 1 = n 的二叉树。
+
+#### 方法1：定义
+
+计算总结点数和树的深度，并比较其关系。
+
+```
+
+```
+
+
+
 ### 4 平衡二叉树（AVL）
+
+空树或左右子树的高度差的绝对值不超过1，且左右子树也都是平衡二叉树。
 
 
 
