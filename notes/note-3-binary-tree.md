@@ -524,25 +524,6 @@ TreeNode* findCommonAncestorRecur(TreeNode *root, TreeNode *node1, TreeNode *nod
 根结点的父节点定义为null。
 
 ```cpp
-class TreeNode {
-public:
-	TreeNode(int v) : val(v), left(nullptr), right(nullptr), parent(nullptr) {}
-
-public:
-	int val;
-	TreeNode *left;
-    TreeNode *right;
-    TreeNode *parent;
-}
-```
-
-对于一个节点的后继：
-
-- 如果该节点有右树，则为右树的最左节点；
-- 如果该节点无右树，则该节点一定存在于其后继节点的左子树上；
-- 此外，整颗树的最右节点一定是无后继的（在判定是否为其后继的左子树最后会走到null）
-
-```
 class TreeNodeP {
 public:
 	TreeNodeP(int v) : val(v), left(nullptr), right(nullptr), parent(nullptr) {}
@@ -553,7 +534,15 @@ public:
 	TreeNodeP *right;
 	TreeNodeP *parent;
 };
+```
 
+对于一个节点的后继：
+
+- 如果该节点有右树，则为右树的最左节点；
+- 如果该节点无右树，则该节点一定存在于其后继节点的左子树上；
+- 此外，整颗树的最右节点一定是无后继的（在判定是否为其后继的左子树最后会走到null）
+
+```cpp
 TreeNodeP* getSuccessor(TreeNodeP *node) {
 	if (node == nullptr) return nullptr;
 	// there is right tree
@@ -578,7 +567,21 @@ TreeNodeP* getSuccessor(TreeNodeP *node) {
 
 
 
-### 3 序列化和反序列化
+### 3 二叉树序列化和反序列化
+
+序列化：将数据转化成字符串的形式；
+
+反序列化：将字符串转化为数据的形式；
+
+序列化转化成的字符串应该是与数据唯一对应的，以便反序列化的时候能还原原本的数据。
+
+对于二叉树的序列化和反序列化：
+
+- 可以使用任何一种遍历的方式完成序列化；
+- 不管使用哪种方式，转化为字符串都应该是：val_ 的形式val表示节点的值或唯一对应的字符串，节点为空的时候使用一个特殊符号占位（如#），下划线_表示值的结束；
+- 反序列化时，通过下划线_将值分割出来，然后根据对应的序列化的重建方法，对二叉树重建；
+
+对于先序遍历，重建时，依次构建根节点、左子树和右子树；
 
 
 

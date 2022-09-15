@@ -50,5 +50,8 @@
     <ClInclude Include="code09_successor_node.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code10_serializing_deserializing.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

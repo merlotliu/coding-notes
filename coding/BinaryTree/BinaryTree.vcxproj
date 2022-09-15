@@ -164,6 +164,7 @@
     <ClInclude Include="code07_avl_tree.hpp" />
     <ClInclude Include="code08_find_common_ancestor.hpp" />
     <ClInclude Include="code09_successor_node.hpp" />
+    <ClInclude Include="code10_serializing_deserializing.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

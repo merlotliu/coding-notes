@@ -1,9 +1,11 @@
 #include "code01_binray_tree_traversal.hpp"
 #include "code03_level_traversal.hpp"
-
+#include "code04_binary_search_tree.hpp"
+#include "code05_completed_binary_tree.hpp"
 #include "code06_full_binary_tree.hpp"
 #include "code07_avl_tree.hpp"
 #include "code08_find_common_ancestor.hpp"
+#include "code10_serializing_deserializing.hpp"
 
 int main(int argc, char *argv[]) {
 	TreeNode *left1 = new TreeNode(4);
@@ -62,7 +64,11 @@ int main(int argc, char *argv[]) {
 
 	std::cout << "Successor Node" << std::endl;
 
-
+	std::cout << "Serializing & Deserializing" << std::endl;
+	std::string str;
+	serializing(root, str);
+	std::cout << str << std::endl;
+	tree.preorderTraversal(deserializing(str));
 
 	return 0;
 }
