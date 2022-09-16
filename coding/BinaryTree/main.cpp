@@ -80,9 +80,6 @@ int main(int argc, char *argv[]) {
 	std::cout << std::endl;
 	printPaperFolds(n, true);
 	std::cout << std::endl;
-
-
-
 	
 	return 0;
 }
