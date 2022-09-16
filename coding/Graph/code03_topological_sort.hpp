@@ -1,28 +1,26 @@
 #pragma once
 #include "Graph.h"
 
-Vertex* getZeroInVertex(Graph *graph, std::unordered_set<Vertex*> &memo) {
-	std::unordered_map<int, Vertex*>::iterator iter = graph->vertexs.begin();
-	for (auto i_vertex : graph->vertexs) {
-		Vertex* ver = i_vertex.second;
-		if (0 == ver->in && memo.find(ver) == memo.end()) {
-			memo.insert(ver);
-			for (auto next : ver->nexts) {
-				next->in--;
-			}
-			return ver;
-		}
-	}
-	return nullptr;
-}
-
 std::vector<Vertex*> Graph::topologicalSort(Graph *graph) {
 	std::vector<Vertex*> res;
-	std::unordered_set<Vertex*> memo;
-	Vertex* ver = getZeroInVertex(graph, memo);
-	while (ver != nullptr) {
+	std::unordered_map<Vertex*, int> in_map;
+	std::queue<Vertex*> zero_in_queue;
+	for (auto i_ver : graph->vertexs) {
+		Vertex *ver = i_ver.second;
+		in_map.insert({ver, ver->in});
+		if (ver->in == 0) {
+			zero_in_queue.push(ver);
+		}
+	}
+	while (!zero_in_queue.empty()) {
+		Vertex *ver = zero_in_queue.front();
+		zero_in_queue.pop();
 		res.push_back(ver);
-		ver = getZeroInVertex(graph, memo);
+		for (Vertex* next : ver->nexts) {	
+			if (--in_map[next] == 0) {
+				zero_in_queue.push(next);
+			}
+		}
 	}
 	return res;
-}
+}	

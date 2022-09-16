@@ -150,36 +150,36 @@ void Graph::DFS(Graph *graph) {
 
 ### 3 拓扑排序
 
-1. 使用哈希表记录已经访问过的节点，防止成环；
-2. 遍历节点列表，找到入度为0且未被记录的节点，加入结果数组，哈希表记录，将与他所关联的边的终点的入度--；
-3. 重复2，直至没有未记录节点；
+1. 一个哈希表，记录节点与入度；
+2. 一个入度为0的队列；
+3. 遍历节点，记录在哈希表，并将初始入度为0的节点加入队列；
+4. 弹出队列首元素，加入结果集合，并把该元素所有可达节点的入度-1，将此时入度为0的节点加入队列；
+5. 重复4，直至队列为空；
 
 ```cpp
-Vertex* getZeroInVertex(Graph *graph, std::unordered_set<Vertex*> &memo) {
-	std::unordered_map<int, Vertex*>::iterator iter = graph->vertexs.begin();
-	for (auto i_vertex : graph->vertexs) {
-		Vertex* ver = i_vertex.second;
-		if (0 == ver->in && memo.find(ver) == memo.end()) {
-			memo.insert(ver);
-			for (auto next : ver->nexts) {
-				next->in--;
-			}
-			return ver;
-		}
-	}
-	return nullptr;
-}
-
 std::vector<Vertex*> Graph::topologicalSort(Graph *graph) {
 	std::vector<Vertex*> res;
-	std::unordered_set<Vertex*> memo;
-	Vertex* ver = getZeroInVertex(graph, memo);
-	while (ver != nullptr) {
+	std::unordered_map<Vertex*, int> in_map;
+	std::queue<Vertex*> zero_in_queue;
+	for (auto i_ver : graph->vertexs) {
+		Vertex *ver = i_ver.second;
+		in_map.insert({ver, ver->in});
+		if (ver->in == 0) {
+			zero_in_queue.push(ver);
+		}
+	}
+	while (!zero_in_queue.empty()) {
+		Vertex *ver = zero_in_queue.front();
+		zero_in_queue.pop();
 		res.push_back(ver);
-		ver = getZeroInVertex(graph, memo);
+		for (Vertex* next : ver->nexts) {	
+			if (--in_map[next] == 0) {
+				zero_in_queue.push(next);
+			}
+		}
 	}
 	return res;
-}
+}	
 ```
 
 
