@@ -150,6 +150,38 @@ void Graph::DFS(Graph *graph) {
 
 ### 3 拓扑排序
 
+1. 使用哈希表记录已经访问过的节点，防止成环；
+2. 遍历节点列表，找到入度为0且未被记录的节点，加入结果数组，哈希表记录，将与他所关联的边的终点的入度--；
+3. 重复2，直至没有未记录节点；
+
+```cpp
+Vertex* getZeroInVertex(Graph *graph, std::unordered_set<Vertex*> &memo) {
+	std::unordered_map<int, Vertex*>::iterator iter = graph->vertexs.begin();
+	for (auto i_vertex : graph->vertexs) {
+		Vertex* ver = i_vertex.second;
+		if (0 == ver->in && memo.find(ver) == memo.end()) {
+			memo.insert(ver);
+			for (auto next : ver->nexts) {
+				next->in--;
+			}
+			return ver;
+		}
+	}
+	return nullptr;
+}
+
+std::vector<Vertex*> Graph::topologicalSort(Graph *graph) {
+	std::vector<Vertex*> res;
+	std::unordered_set<Vertex*> memo;
+	Vertex* ver = getZeroInVertex(graph, memo);
+	while (ver != nullptr) {
+		res.push_back(ver);
+		ver = getZeroInVertex(graph, memo);
+	}
+	return res;
+}
+```
+
 
 
 ### 4 Kruskal-最小生成树 

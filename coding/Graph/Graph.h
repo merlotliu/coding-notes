@@ -14,6 +14,7 @@ public:
 	
 	void BFS(Graph *graph);
 	void DFS(Graph *graph);
+	std::vector<Vertex*> topologicalSort(Graph *graph);
 	
 	void doHandle(Vertex *ver);
 public:

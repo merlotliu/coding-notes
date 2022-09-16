@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="code01_bfs.hpp" />
     <ClInclude Include="code02_dfs.hpp" />
+    <ClInclude Include="code03_topological_sort.hpp" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="Vertex.h" />
