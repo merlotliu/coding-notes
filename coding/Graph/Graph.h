@@ -15,6 +15,8 @@ public:
 	void BFS(Graph *graph);
 	void DFS(Graph *graph);
 	std::vector<Vertex*> topologicalSort(Graph *graph);
+	std::vector<Edge*> kruskal(Graph *graph);
+	std::vector<Edge*> prim(Graph *graph);
 	
 	void doHandle(Vertex *ver);
 public:

@@ -41,5 +41,11 @@
     <ClInclude Include="code03_topological_sort.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code04_kruskal.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code05_prim.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

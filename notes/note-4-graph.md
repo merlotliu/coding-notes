@@ -190,6 +190,47 @@ std::vector<Vertex*> Graph::topologicalSort(Graph *graph) {
 
 ### 5 Prim-最小生成树 
 
+1. 设定一个集合，从点集中任选一个点加入集合，将其边加入优先级队列中（小根堆）；
+2. 从其边中选择权值最小的（且不成环）加入结果数组，并将连接的点加入集合，将其边加入优先级队列；
+
+3. 重复2，直至没有节点可选；
+4. 将结果数组返回；
+
+```cpp
+std::vector<Edge*> Graph::prim(Graph *graph) {
+	std::vector<Edge*> res;
+	std::unordered_set<Vertex*> memo;
+	auto cmp = [](Edge *left, Edge *right) { 
+		return (left->weight > right->weight) - (left->weight < right->weight);
+	};
+	std::priority_queue<Edge*, std::vector<Edge*>, decltype(cmp)> small_heap(cmp);
+	
+	for (auto i_ver : graph->vertexs) {
+		Vertex *ver = i_ver.second;
+		if(memo.find(ver) == memo.end()) {
+			memo.insert(ver);
+			for (auto edge : ver->edges) {
+				small_heap.push(edge);
+			}
+			while (!small_heap.empty()) {
+				Edge *min_edge = small_heap.top();
+				small_heap.pop();
+				Vertex *from = graph->vertexs[min_edge->from];
+				Vertex *to = graph->vertexs[min_edge->to];
+				if (memo.find(to) == memo.end()) {
+					res.push_back(min_edge);
+					memo.insert(to);
+					for (auto edge : to->edges) {
+						small_heap.push(edge);
+					}
+				}
+			}
+		}
+	}
+	return res;
+}
+```
+
 
 
 ### 6 Dijstra 算法-最短路径

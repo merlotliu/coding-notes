@@ -130,6 +130,8 @@
     <ClInclude Include="code01_bfs.hpp" />
     <ClInclude Include="code02_dfs.hpp" />
     <ClInclude Include="code03_topological_sort.hpp" />
+    <ClInclude Include="code04_kruskal.hpp" />
+    <ClInclude Include="code05_prim.hpp" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="Vertex.h" />
