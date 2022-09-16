@@ -290,9 +290,50 @@ std::vector<Edge*> Graph::prim(Graph *graph) {
 
 
 
-### 6 Dijstra 算法-最短路径
+### 6 Dijkstra 算法-最短路径
 
+对于给定起点v，计算他到其他所有点的最小距离。
 
+这个算法，会根据路径递增的顺序产生最短路径：
 
+1. 建立一张所有节点的map，值表示从起点v到自己的总权值；
+2. 初始为从起点v直接到当前节点的权值，自己为0，不可直接到为无穷（特殊符号或者最大值）；
+3. 选择离起点最近且没有被选过的节点，通过该节点延伸出的边，依次更新对应节点的最小权值；
+4. 重复3，直到没有未被选过的点；
 
+Notes：不能够有和为负数的环，否则或一直循环，将值刷为负数。
+
+```cpp
+Vertex* findMinDistanceVertex(std::unordered_map<Vertex*, int> &shortest_map, std::unordered_set<Vertex*> &memo) {
+	int min = INT_MAX;
+	Vertex *min_ver = nullptr;
+	for (auto ver_i : shortest_map) {
+		if (ver_i.second < min && memo.find(ver_i.first) == memo.end()) {
+			min = ver_i.second;
+			min_ver = ver_i.first;
+		}
+	}
+	memo.insert(min_ver);
+	return min_ver;
+}
+
+std::vector<int> Graph::dijkstra(Graph *graph, Vertex *v0) {
+	std::unordered_set<Vertex*> memo;
+	std::unordered_map<Vertex*, int> shortest_map;
+	for (auto ver : graph->vertexs_map) {
+		shortest_map.insert({ ver.second, INT_MAX });
+	}
+	shortest_map[v0] = 0;
+	Vertex *min_ver = v0;
+	while (min_ver != nullptr) {
+		for (auto next : min_ver->edges) {
+			int val = next->weight + shortest_map[min_ver];
+			Vertex *to = graph->vertexs_map[next->to];
+			if (val < shortest_map[to]) {
+				shortest_map[to] = val;
+			}
+		}
+	}
+}
+```
 

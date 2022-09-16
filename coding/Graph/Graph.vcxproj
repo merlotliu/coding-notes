@@ -132,6 +132,7 @@
     <ClInclude Include="code03_topological_sort.hpp" />
     <ClInclude Include="code04_kruskal.hpp" />
     <ClInclude Include="code05_prim.hpp" />
+    <ClInclude Include="code06_dijstra.hpp" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="Vertex.h" />

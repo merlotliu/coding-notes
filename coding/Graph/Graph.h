@@ -17,6 +17,7 @@ public:
 	std::vector<Vertex*> topologicalSort(Graph *graph);
 	std::vector<Edge*> kruskal(Graph *graph);
 	std::vector<Edge*> prim(Graph *graph);
+	std::vector<int> dijkstra(Graph *graph, Vertex *v0);
 	
 	void doHandle(Vertex *ver);
 public:
