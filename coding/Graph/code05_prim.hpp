@@ -9,7 +9,7 @@ std::vector<Edge*> Graph::prim(Graph *graph) {
 	};
 	std::priority_queue<Edge*, std::vector<Edge*>, decltype(cmp)> small_heap(cmp);
 	
-	for (auto i_ver : graph->vertexs) {
+	for (auto i_ver : graph->vertexs_map) {
 		Vertex *ver = i_ver.second;
 		if(memo.find(ver) == memo.end()) {
 			memo.insert(ver);
@@ -19,8 +19,8 @@ std::vector<Edge*> Graph::prim(Graph *graph) {
 			while (!small_heap.empty()) {
 				Edge *min_edge = small_heap.top();
 				small_heap.pop();
-				Vertex *from = graph->vertexs[min_edge->from];
-				Vertex *to = graph->vertexs[min_edge->to];
+				Vertex *from = graph->vertexs_map[min_edge->from];
+				Vertex *to = graph->vertexs_map[min_edge->to];
 				if (memo.find(to) == memo.end()) {
 					res.push_back(min_edge);
 					memo.insert(to);

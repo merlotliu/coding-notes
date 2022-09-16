@@ -4,8 +4,8 @@
 void Graph::BFS(Graph *graph) {
 	std::queue<Vertex*> que;
 	std::unordered_set<Vertex*> memo;
-	memo.insert(graph->vertexs[0]);
-	que.push(graph->vertexs[0]);
+	memo.insert(graph->vertexs_map[0]);
+	que.push(graph->vertexs_map[0]);
 	while (!que.empty()) {
 		Vertex *cur = que.front();
 		que.pop();

@@ -5,7 +5,7 @@ std::vector<Vertex*> Graph::topologicalSort(Graph *graph) {
 	std::vector<Vertex*> res;
 	std::unordered_map<Vertex*, int> in_map;
 	std::queue<Vertex*> zero_in_queue;
-	for (auto i_ver : graph->vertexs) {
+	for (auto i_ver : graph->vertexs_map) {
 		Vertex *ver = i_ver.second;
 		in_map.insert({ver, ver->in});
 		if (ver->in == 0) {

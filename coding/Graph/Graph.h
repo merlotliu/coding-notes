@@ -20,7 +20,7 @@ public:
 	
 	void doHandle(Vertex *ver);
 public:
-	std::unordered_map<int, Vertex*> vertexs;
+	std::unordered_map<int, Vertex*> vertexs_map;
 	std::unordered_set<Edge*> edges;
 }; 
 

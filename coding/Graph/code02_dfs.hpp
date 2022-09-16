@@ -4,8 +4,8 @@
 void Graph::DFS(Graph *graph) {
 	std::stack<Vertex*> stk;
 	std::unordered_set<Vertex*> memo;
-	memo.insert(graph->vertexs[0]);
-	stk.push(graph->vertexs[0]);
+	memo.insert(graph->vertexs_map[0]);
+	stk.push(graph->vertexs_map[0]);
 	while (!stk.empty()) {
 		Vertex *cur = stk.top();
 		stk.pop();
