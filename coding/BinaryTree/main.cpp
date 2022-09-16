@@ -81,5 +81,8 @@ int main(int argc, char *argv[]) {
 	printPaperFolds(n, true);
 	std::cout << std::endl;
 
+
+
+	
 	return 0;
 }
