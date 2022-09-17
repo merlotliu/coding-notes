@@ -243,7 +243,10 @@ std::vector<Edge*> Graph::kruskal(Graph *graph) {
 }
 ```
 
+#### 并查集
 
+- 集合合并；
+- 是否在一个集合的判断；
 
 ### 5 Prim-最小生成树 
 
@@ -337,3 +340,6 @@ std::vector<int> Graph::dijkstra(Graph *graph, Vertex *v0) {
 }
 ```
 
+#### 优化
+
+自定义堆结构，可以在某些节点权值改变时，调整堆结构。
