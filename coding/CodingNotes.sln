@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graph", "Graph\Graph.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TrieTree", "TrieTree\TrieTree.vcxproj", "{75D283CF-F0E7-4D5E-A55D-51F741E961C5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Greedy", "Greedy\Greedy.vcxproj", "{939F65B4-37BF-4A6B-93AD-2078DD06403A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{75D283CF-F0E7-4D5E-A55D-51F741E961C5}.Release|x64.Build.0 = Release|x64
 		{75D283CF-F0E7-4D5E-A55D-51F741E961C5}.Release|x86.ActiveCfg = Release|Win32
 		{75D283CF-F0E7-4D5E-A55D-51F741E961C5}.Release|x86.Build.0 = Release|Win32
+		{939F65B4-37BF-4A6B-93AD-2078DD06403A}.Debug|x64.ActiveCfg = Debug|x64
+		{939F65B4-37BF-4A6B-93AD-2078DD06403A}.Debug|x64.Build.0 = Debug|x64
+		{939F65B4-37BF-4A6B-93AD-2078DD06403A}.Debug|x86.ActiveCfg = Debug|Win32
+		{939F65B4-37BF-4A6B-93AD-2078DD06403A}.Debug|x86.Build.0 = Debug|Win32
+		{939F65B4-37BF-4A6B-93AD-2078DD06403A}.Release|x64.ActiveCfg = Release|x64
+		{939F65B4-37BF-4A6B-93AD-2078DD06403A}.Release|x64.Build.0 = Release|x64
+		{939F65B4-37BF-4A6B-93AD-2078DD06403A}.Release|x86.ActiveCfg = Release|Win32
+		{939F65B4-37BF-4A6B-93AD-2078DD06403A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
