@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Greedy", "Greedy\Greedy.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PriorityQueue", "PriorityQueue\PriorityQueue.vcxproj", "{1527A423-EC07-410C-A56A-B83180966C2E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Backtrack", "Backtrack\Backtrack.vcxproj", "{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{1527A423-EC07-410C-A56A-B83180966C2E}.Release|x64.Build.0 = Release|x64
 		{1527A423-EC07-410C-A56A-B83180966C2E}.Release|x86.ActiveCfg = Release|Win32
 		{1527A423-EC07-410C-A56A-B83180966C2E}.Release|x86.Build.0 = Release|Win32
+		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Debug|x64.ActiveCfg = Debug|x64
+		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Debug|x64.Build.0 = Debug|x64
+		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Debug|x86.ActiveCfg = Debug|Win32
+		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Debug|x86.Build.0 = Debug|Win32
+		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Release|x64.ActiveCfg = Release|x64
+		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Release|x64.Build.0 = Release|x64
+		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Release|x86.ActiveCfg = Release|Win32
+		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
