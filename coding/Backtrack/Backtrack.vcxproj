@@ -123,7 +123,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="code01_n_queens.hpp" />
+    <ClInclude Include="code02_all_subsequence_of_string.hpp" />
+    <ClInclude Include="code08_n_queens.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

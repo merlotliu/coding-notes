@@ -1,31 +1,14 @@
-#include "code01_n_queens.hpp"
+#include "code02_all_subsequence_of_string.hpp"
+#include "code08_n_queens.hpp"
+
 #include <iostream>
 
-int backtrack(int col_lim, int left_dia_lim, int right_dia_lim, int limit_range) {
-	if (col_lim == limit_range) {
-		return 1;
-	}
-	int res = 0;
-	// calculate current all of possible position
-	int pos = limit_range & (~(col_lim | left_dia_lim | right_dia_lim));
-	while (pos != 0) {
-		int most_right_one = pos & (~pos + 1); // get most right one
-		pos -= most_right_one; // mark to limit
-		// 下一个位置左斜线的限制就是当前左斜线限制或上当前选择的位置再左移一位
-		// 下一个位置右斜线的限制就是当前右斜线限制或上当前选择的位置再右移一位
-		res += backtrack(col_lim | most_right_one,
-			(left_dia_lim | most_right_one) << 1,
-			(right_dia_lim | most_right_one) >> 1,
-			limit_range);
-	}
-	return res;
+void allSubsequence() {
+	std::string str = "abc";
+	printAllSubsequence(str);
 }
 
-int totalNQueensBit(int n) {
-	return backtrack(0, 0, 0, (1 << n) - 1);
-}
-
-int main(int argc, char *argv[]) {
+void NQueens() {
 	int n = 4;
 	std::cout << totalNQueensBit(n) << std::endl;
 	std::cout << totalNQueens(n) << std::endl;
@@ -40,5 +23,13 @@ int main(int argc, char *argv[]) {
 		}
 		std::cout << std::endl;
 	}
+}
+
+int main(int argc, char *argv[]) {
+	// print all subsequence of string
+	allSubsequence();
+	// n queens
+	NQueens();
+
 	return 0;
 }
