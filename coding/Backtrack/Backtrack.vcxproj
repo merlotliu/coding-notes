@@ -126,6 +126,7 @@
     <ClInclude Include="code02_all_subsequence_of_string.hpp" />
     <ClInclude Include="code03_all_permutation.hpp" />
     <ClInclude Include="code08_n_queens.hpp" />
+    <ClInclude Include="code04_reverse_statck_with_recursion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

@@ -29,5 +29,8 @@
     <ClInclude Include="code03_all_permutation.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code04_reverse_statck_with_recursion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

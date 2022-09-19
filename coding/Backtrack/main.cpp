@@ -1,5 +1,6 @@
 #include "code02_all_subsequence_of_string.hpp"
 #include "code03_all_permutation.hpp"
+#include "code04_reverse_statck_with_recursion.h"
 #include "code08_n_queens.hpp"
 
 #include <iostream>
@@ -12,6 +13,16 @@ void allPermutation() {
 void allSubsequence() {
 	std::string str = "abc";
 	printAllSubsequence(str);
+}
+
+void reverseStackWithRecursion() {
+	std::stack<int> stk;
+	stk.push(1);
+	stk.push(2);
+	stk.push(3);
+	printStack(stk);
+	reverseStack(stk);
+	printStack(stk);
 }
 
 void NQueens() {
@@ -36,8 +47,11 @@ int main(int argc, char *argv[]) {
 	//allSubsequence();
 	
 	// 3 print all permutation
-	allPermutation();
+	//allPermutation();
 	
+	// 4 reverse stack with recursion
+	reverseStackWithRecursion();
+
 	// n queens
 	//NQueens();
 
