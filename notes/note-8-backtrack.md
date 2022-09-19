@@ -86,7 +86,7 @@ void printAllPermutation(std::string &str) {
 }
 ```
 
-去重剪枝
+去重剪枝的全排列
 
 ```cpp
 /* alt : 选择列表
