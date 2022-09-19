@@ -79,3 +79,6 @@ void printArray(std::vector<int> &arr) {
 }
 ```
 
+### 2 Dijkstra算法优化
+
+改写堆以优化Dijkstra算法算法。
