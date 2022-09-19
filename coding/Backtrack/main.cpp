@@ -1,6 +1,7 @@
 #include "code02_all_subsequence_of_string.hpp"
 #include "code03_all_permutation.hpp"
-#include "code04_reverse_statck_with_recursion.h"
+#include "code04_reverse_statck_with_recursion.hpp"
+#include "code06_01_bag.hpp"
 #include "code08_n_queens.hpp"
 
 #include <iostream>
@@ -23,6 +24,13 @@ void reverseStackWithRecursion() {
 	printStack(stk);
 	reverseStack(stk);
 	printStack(stk);
+}
+
+void bag01() {
+	std::vector<int> weights = {2, 4, 5, 8, 10};
+	std::vector<int> values = {4, 3, 1, 4, 3};
+	int bag = 20;
+	std::cout << getMaxVal(weights, values, bag) << std::endl;
 }
 
 void NQueens() {
@@ -50,7 +58,10 @@ int main(int argc, char *argv[]) {
 	//allPermutation();
 	
 	// 4 reverse stack with recursion
-	reverseStackWithRecursion();
+	//reverseStackWithRecursion();
+
+	// 6 01bag
+	bag01();
 
 	// n queens
 	//NQueens();

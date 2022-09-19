@@ -32,5 +32,8 @@
     <ClInclude Include="code04_reverse_statck_with_recursion.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code06_01_bag.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
