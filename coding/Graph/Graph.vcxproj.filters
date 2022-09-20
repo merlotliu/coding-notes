@@ -47,7 +47,10 @@
     <ClInclude Include="code05_prim.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="code06_dijstra.hpp">
+    <ClInclude Include="code06_dijkstra_diy_heap.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code06_dijkstra.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

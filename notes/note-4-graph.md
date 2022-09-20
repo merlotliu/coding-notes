@@ -343,3 +343,147 @@ std::vector<int> Graph::dijkstra(Graph *graph, Vertex *v0) {
 #### 优化
 
 自定义堆结构，可以在某些节点权值改变时，调整堆结构。
+
+首先定义一个节点与到起点最短距离的结构：
+
+```cpp
+class VertexRecord {
+public:
+	VertexRecord(Vertex *v, int d) : vertex(v), distance(d) {}
+public:
+	Vertex *vertex;
+	int distance;
+};
+```
+
+##### 主逻辑：
+
+1. 生成自定义堆结构，将起点及其到起点的距离（0）放入堆中；
+2. 定义用于返回的结果数组；
+3. 开始堆顶的弹出，堆不为空时，重复以下操作：
+   1. 堆顶元素（一定是**本轮**距离起点最近的节点）弹出，记录堆顶节点到起点的最短距离；
+   2. 遍历该节点的边，将其另一端的节点压入堆中，同时更新其到起点的距离（1中的距离+其边的权值，如果更小就更新，这些操作放置在了堆里）；
+   3. 将此节点及其最短距离存入结果数组；
+
+```cpp
+std::vector<VertexRecord*> dijkstra(Graph *graph, Vertex *v0) {
+	std::vector<VertexRecord*> res;
+	VertexHeap vertex_heap;
+	vertex_heap.updateVertexRecord(v0, 0);
+	while (!vertex_heap.isEmpty()) {
+		VertexRecord *cur = vertex_heap.pop();
+		int distance_to_v0 = cur->distance;
+		for (auto edge : cur->vertex->edges) {
+			vertex_heap.updateVertexRecord(edge->to, edge->weight + distance_to_v0);
+		}
+		res.push_back(cur);
+	}
+	return res;
+}
+```
+
+##### 堆的自定义：
+
+我们期待在最基本的小根堆的功能上，如果堆上有元素值的改变，能够自动的调整堆结构，且时间复杂度较小。
+
+主要定义一个数组作为堆的底层结构存储`VertexRecord`类型的指针，另外一个顶点与索引的哈希表，还有一个限制堆大小的_size。
+
+主要向外提供3个函数：
+
+- isEmpty：判断堆是否为空；
+- pop：弹出堆顶元素；
+  在此函数中，我们并非真的弹出了元素，仅仅将数组中首元素与(\_size-1)位置元素交换，_size大小减一，将该节点的索引标记为-1，返回节点指针；
+- updateVertexRecord：添加或更新堆内节点的值，并调整堆结构；
+  - 当记录已经存在且弹出时（索引为-1），不做任何操作；
+  - 当记录不存在则将其添加到数组中（_size与数组等长时，使用push_back，否则在\_size位置直接添加，\_size++），然后调整堆结构heapinsert；
+  - 若记录存在，获取索引，根据值的大小，调整堆结构。
+
+```cpp
+class VertexHeap {
+public:
+	void updateVertexRecord(Vertex *vertex, int distance) {
+		push(vertex, distance);
+		int cur_idx = vertex_idx_map[vertex];
+		if (records_heap[cur_idx]->distance > distance) {
+			records_heap[cur_idx]->distance = distance;
+		}
+		heapInsert(vertex_idx_map[vertex]);
+
+		// vertex is or not exist
+		// -1 : already pop
+		// idx normal : exist
+	}
+	
+	// get top of heap & pop
+	VertexRecord* pop() {
+		if (_size != 0) {
+			// swap head & tail
+			swap(records_heap[0], records_heap[_size - 1]); 
+			// reheap
+			heapify(0, _size);
+			// mark to -1 show that the vertex is not in the heap but was exist
+			vertex_idx_map[records_heap[_size - 1]->vertex] = -1;
+			// return top & pop
+			return records_heap[--_size];
+		}
+		return nullptr;
+	}
+
+	bool isEmpty() {
+		return _size == 0;
+	}
+
+private:
+	void push(Vertex *vertex, int distance) {
+		if (vertex_idx_map.find(vertex) == vertex_idx_map.end()) {
+			VertexRecord *cur = new VertexRecord(vertex, distance);
+			if (_size < records_heap.size()) {
+				records_heap[_size] = cur;
+			} else {
+				records_heap.push_back(cur);
+			}
+			vertex_idx_map[cur->vertex] = _size++;
+		}
+	}
+
+	void heapInsert(int idx) {
+		while (records_heap[idx]->distance < records_heap[(idx - 1) >> 1]->distance) {
+			swap(records_heap[idx], records_heap[(idx - 1) >> 1]);
+			idx = (idx - 1) >> 1;
+		}
+	}
+
+	void heapify(int idx, int size) {
+		VertexRecord *cur = records_heap[idx];
+		int left_idx = idx * 2 + 1;
+		while (left_idx < size) {
+			int min_child_idx = left_idx + 1 < size
+				&& records_heap[left_idx]->distance > records_heap[left_idx + 1]->distance ?
+				left_idx + 1 : left_idx;
+			if (records_heap[idx]->distance < records_heap[min_child_idx]->distance) {
+				break;
+			}
+			swap(records_heap[idx], records_heap[min_child_idx]);
+			idx = min_child_idx;
+		}
+	}
+
+	void swap(VertexRecord* a, VertexRecord* b) {
+		int idx = vertex_idx_map[a->vertex];
+		vertex_idx_map[a->vertex] = vertex_idx_map[b->vertex];
+		vertex_idx_map[b->vertex] = idx;
+		VertexRecord tmp = *a;
+		*a = *b;
+		*b = tmp;
+	}
+
+public:
+	VertexHeap() :_size(0) {}
+
+private:
+	int _size;
+	std::vector<VertexRecord*> records_heap;
+	std::unordered_map<Vertex*, int> vertex_idx_map;
+};
+```
+

@@ -2,10 +2,10 @@
 
 class Edge {
 public:
-	Edge(int f, int t, int w) : from(f), to(t), weight(w) {}
+	Edge(Vertex *f, Vertex *t, int w) : from(f), to(t), weight(w) {}
 public:
-	int from;
-	int to;
+	Vertex *from;
+	Vertex *to;
 	int weight;
 };
 
