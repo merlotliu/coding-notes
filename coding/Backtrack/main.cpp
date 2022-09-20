@@ -2,6 +2,7 @@
 #include "code02_all_subsequence_of_string.hpp"
 #include "code03_all_permutation.hpp"
 #include "code04_reverse_statck_with_recursion.hpp"
+#include "code05_number_convert_to_letter.hpp"
 #include "code06_01_bag.hpp"
 #include "code08_n_queens.hpp"
 
@@ -31,6 +32,12 @@ void reverseStackWithRecursion() {
 	printStack(stk);
 }
 
+void numConvertToLetter() {
+	std::string num = "112312121223343556";
+	std::cout << numConvertToLetter(num) << std::endl;
+	std::cout << letterRecur(num, 0) << std::endl;
+}
+
 void bag01() {
 	std::vector<int> weights = {2, 4, 5, 8, 10};
 	std::vector<int> values = {4, 3, 1, 4, 3};
@@ -57,7 +64,7 @@ void NQueens() {
 
 int main(int argc, char *argv[]) {
 	// 1 hanoi tower
-	hanoiTower();
+	//hanoiTower();
 
 	// 2 print all subsequence of string
 	//allSubsequence();
@@ -67,6 +74,9 @@ int main(int argc, char *argv[]) {
 	
 	// 4 reverse stack with recursion
 	//reverseStackWithRecursion();
+
+	// 5 number convert to letter
+	numConvertToLetter();
 
 	// 6 01bag
 	//bag01();

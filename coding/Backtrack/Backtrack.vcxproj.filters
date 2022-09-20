@@ -38,5 +38,8 @@
     <ClInclude Include="code01_hanoi_tower.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code05_number_convert_to_letter.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

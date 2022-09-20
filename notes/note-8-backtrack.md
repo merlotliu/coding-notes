@@ -201,9 +201,52 @@ void printStack(std::stack<int> stk) {
 
 规定1和A对应、2和B对应、3和C对应...那么一个数字字符串比如"111"，就可以转化为"AAA"、"KA"和"AK"。给定一个只有数字字符组成的字符串str，返回有多少种转化结果。
 
+对于长度为n的字符串而言，在i位置的情况：
+
+- i为0：不能转化；
+- i为1：两种方式，i或（i，i+1）；
+- i为2：
+  - i+1在[0, 6]：i或（i，i+1）；
+  - i；
+- i在[3, 9]：i；
+
+到达末尾结算。
+
+```cpp
+int res = 0;
+void backtrack(std::string &num, int i) {
+	if ('0' == num[i]) {
+		return;
+	}
+	if (i == num.size()) {
+		res++;
+	}
+	if ('1' == num[i]) {
+		backtrack(num, i + 1);
+		backtrack(num, i + 2);
+	}
+	if ('2' == num[i]) {
+		backtrack(num, i + 1);
+		if (i + 1 != num.size() && num[i + 1] >= '0' && num[i + 1] <= '6') {
+			backtrack(num, i + 2);
+		}
+	}
+	if (num[i] >= '3' && num[i] <= '9') {
+		backtrack(num, i + 1);
+	}
+}
+
+int numConvertToLetter(std::string &num) {
+	backtrack(num, 0);
+	return res;
+}
 ```
 
-```
+不使用全局变量，让递归函数最后返回结果：
+
+- 能产生多种情况的位置只有1和2，每次分叉的和为此次的返回值；
+- 遇到0则返回0；
+- 数组结束也返回0；
 
 
 
