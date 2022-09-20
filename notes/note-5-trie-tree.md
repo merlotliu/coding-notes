@@ -18,7 +18,7 @@
 
 以下就是由上面这些字符串最后生成的前缀树：
 
-![image-20220918133908677](../../.gitbook/assets/note-5.assets/image-20220918133908677.png)
+![image-20220918133908677](../.gitbook/assets/note-5-trie-tree.assets/image-20220918133908677.png)
 
 ## 表示
 
