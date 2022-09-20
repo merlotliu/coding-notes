@@ -35,5 +35,8 @@
     <ClInclude Include="code06_01_bag.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code01_hanoi_tower.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

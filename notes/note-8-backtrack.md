@@ -9,6 +9,8 @@
 3. 有当得到了子问题的结果之后的决策过程;
 4. 不记录每一个子问题的解；
 
+对于一个问题里面的某个小决策，会有做与不做两个选择。
+
 ## 经典题型
 
 ### 1 汉诺塔问题
@@ -20,8 +22,31 @@
 
 打印n层汉诺塔从最左边移动到最右边的全部过程。
 
-```
+- 仅有一个圆盘时，可以直接从左移动到右；
+- 2个时，先把上面的移到中间，再把下面的移动到右边，最后把上面再移动到右边；
+- 3个，先把上面两个移动到中间，再把下面的移动到右边，最后把上面的移动到右边；
+- n个时，先把n-1个移动到中间，再把下面的移动到右边，最后把上面n-1个移动到右边；
 
+- ... ... 
+- 事实上，把下面的从左移到右就是只剩一个的时候；
+- 而把n-1从左移动到中间，还是从中间移动到右边，最终又会被拆解为2个圆盘或1个的情况；
+- 因为最底层圆盘仅需要移动一次。
+
+```cpp
+void recursion(int i, std::string from, std::string to, std::string other) {
+	if (i == 1) {
+		std::cout << i << " " << from << " -> " << to << std::endl;
+		return;
+	}
+	recursion(i - 1, from, other, to); // move 1-(i-1) from -> other
+	std::cout << i << " " << from << " -> " << to << std::endl; // move i from -> to
+	recursion(i - 1, other, to, from); // move 1-(i-1) other - > from
+}
+
+void hanoi() {
+	int n = 4;
+	recursion(n, "left", "right", "mid");
+}
 ```
 
 

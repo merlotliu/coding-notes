@@ -1,3 +1,4 @@
+#include "code01_hanoi_tower.hpp"
 #include "code02_all_subsequence_of_string.hpp"
 #include "code03_all_permutation.hpp"
 #include "code04_reverse_statck_with_recursion.hpp"
@@ -5,6 +6,10 @@
 #include "code08_n_queens.hpp"
 
 #include <iostream>
+
+void hanoiTower() {
+	hanoi();
+}
 
 void allPermutation() {
 	std::string str = "abc";
@@ -51,6 +56,9 @@ void NQueens() {
 }
 
 int main(int argc, char *argv[]) {
+	// 1 hanoi tower
+	hanoiTower();
+
 	// 2 print all subsequence of string
 	//allSubsequence();
 	
@@ -61,7 +69,7 @@ int main(int argc, char *argv[]) {
 	//reverseStackWithRecursion();
 
 	// 6 01bag
-	bag01();
+	//bag01();
 
 	// n queens
 	//NQueens();
