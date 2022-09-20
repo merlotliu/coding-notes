@@ -75,8 +75,8 @@ int backtrack(int col_lim, int left_dia_lim, int right_dia_lim, int limit_range)
 	while (pos != 0) {
 		int most_right_one = pos & (~pos + 1); // get most right one
 		pos -= most_right_one; // mark to limit
-		// ��һ��λ����б�ߵ����ƾ��ǵ�ǰ��б�����ƻ��ϵ�ǰѡ���λ��������һλ
-		// ��һ��λ����б�ߵ����ƾ��ǵ�ǰ��б�����ƻ��ϵ�ǰѡ���λ��������һλ
+		// 下一个位置左斜线的限制就是当前左斜线限制或上当前选择的位置再左移一位
+		// 下一个位置右斜线的限制就是当前右斜线限制或上当前选择的位置再右移一位
 		res += backtrack(col_lim | most_right_one,
 			(left_dia_lim | most_right_one) << 1,
 			(right_dia_lim | most_right_one) >> 1,
