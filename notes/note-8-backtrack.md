@@ -186,8 +186,96 @@ void printStack(std::stack<int> stk) {
 
 给定两个长度都为N的数组weights和values，weights[i]和values[i]分别代表i号物品的重量和价值。给定一个正数bag，表示一个载重bag的袋子，你装的物品不能超过这个重量。返回你能装下最多的价值是多少？
 
+```cpp
+#pragma once
+#include <vector>
+#include <algorithm>
+
+int backtrack(std::vector<int> &weights, std::vector<int> &values, int bag, int i, int picked_weights, int picked_values) {
+	if (picked_weights > bag) {
+		return 0;
+	}
+	if(i == weights.size()) {
+		return picked_values;
+	}
+	int unpicked = backtrack(weights, values, bag, i + 1, picked_weights, picked_values);
+	int picked = backtrack(weights, values, bag, i + 1, picked_weights + weights[i], picked_values + values[i]);
+	return std::max(unpicked, picked);
+}
+
+//std::vector<int> weights = { 2, 4, 5, 8, 10 };
+//std::vector<int> values = { 4, 2, 1, 4, 3 };
+int getMaxVal(std::vector<int> &weights, std::vector<int> &values, int bag) {
+	return backtrack(weights, values, bag, 0, 0, 0);
+}
 ```
 
+完整的递归树如下：
+
+```shell
+.
+├── n_0_0_0
+│?? ├── n_1_0_0
+│?? │?? ├── n_2_0_0
+│?? │?? │?? ├── n_3_0_0
+│?? │?? │?? │?? ├── n_4_0_0
+│?? │?? │?? │?? └── p_4_10_3
+│?? │?? │?? └── p_3_8_4
+│?? │?? │??     ├── n_4_0_0
+│?? │?? │??     └── p_4_8_3
+│?? │?? └── p_2_5_1
+│?? │??     ├── n_3_0_0
+│?? │??     │?? ├── n_4_0_0
+│?? │??     │?? └── p_4_10_3
+│?? │??     └── p_3_8_4
+│?? │??         ├── n_4_0_0
+│?? │??         └── p_4_8_3
+│?? └── p_1_4_2
+│??     ├── n_2_0_0
+│??     │?? ├── n_3_0_0
+│??     │?? │?? ├── n_4_0_0
+│??     │?? │?? └── p_4_10_3
+│??     │?? └── p_3_8_4
+│??     │??     ├── n_4_0_0
+│??     │??     └── p_4_8_3
+│??     └── p_2_5_1
+│??         ├── n_3_0_0
+│??         │?? ├── n_4_0_0
+│??         │?? └── p_4_10_3
+│??         └── p_3_8_4
+│??             ├── n_4_0_0
+│??             └── p_4_8_3
+└── p_0_2_4
+    ├── n_1_0_0
+    │?? ├── n_2_0_0
+    │?? │?? ├── n_3_0_0
+    │?? │?? │?? ├── n_4_0_0
+    │?? │?? │?? └── p_4_10_3
+    │?? │?? └── p_3_8_4
+    │?? │??     ├── n_4_0_0
+    │?? │??     └── p_4_8_3
+    │?? └── p_2_5_1
+    │??     ├── n_3_0_0
+    │??     │?? ├── n_4_0_0
+    │??     │?? └── p_4_10_3
+    │??     └── p_3_8_4
+    │??         ├── n_4_0_0
+    │??         └── p_4_8_3
+    └── p_1_4_2
+        ├── n_2_0_0
+        │?? ├── n_3_0_0
+        │?? │?? ├── n_4_0_0
+        │?? │?? └── p_4_10_3
+        │?? └── p_3_8_4
+        │??     ├── n_4_0_0
+        │??     └── p_4_8_3
+        └── p_2_5_1
+            ├── n_3_0_0
+            │?? ├── n_4_0_0
+            │?? └── p_4_10_3
+            └── p_3_8_4
+                ├── n_4_0_0
+                └── p_4_8_3
 ```
 
 
