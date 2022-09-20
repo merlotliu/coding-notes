@@ -4,6 +4,7 @@
 #include "code04_reverse_statck_with_recursion.hpp"
 #include "code05_number_convert_to_letter.hpp"
 #include "code06_01_bag.hpp"
+#include "code07_winner_score.hpp"
 #include "code08_n_queens.hpp"
 
 #include <iostream>
@@ -45,6 +46,11 @@ void bag01() {
 	std::cout << getMaxVal(weights, values, bag) << std::endl;
 }
 
+void winnerScore() {
+	std::vector<int> nums = {1, 2, 100, 4};
+	std::cout << winnerScore(nums) << std::endl;
+}
+
 void NQueens() {
 	int n = 4;
 	std::cout << totalNQueensBit(n) << std::endl;
@@ -76,12 +82,15 @@ int main(int argc, char *argv[]) {
 	//reverseStackWithRecursion();
 
 	// 5 number convert to letter
-	numConvertToLetter();
+	//numConvertToLetter();
 
 	// 6 01bag
 	//bag01();
 
-	// n queens
+	// 7 winner
+	winnerScore();
+
+	// 8 n queens
 	//NQueens();
 
 	return 0;

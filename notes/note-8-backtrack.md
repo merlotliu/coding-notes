@@ -248,6 +248,10 @@ int numConvertToLetter(std::string &num) {
 - 遇到0则返回0；
 - 数组结束也返回0；
 
+```
+
+```
+
 
 
 ### 6 01背包问题
@@ -362,8 +366,36 @@ arr=[1,100,2]。
 
 开始时，玩家A不管拿1还是2，玩家B作为绝顶聪明的人，都会把100拿走。玩家B会获胜，分数为100。所以返回100。
 
-```
 
+
+对于其中**一个玩家**来说：
+
+- 先手：一定会选择最有利的决策使得收益最大化，而使得对手的收益最低。
+
+- 后手：从另外一个玩家选择之后，收益降低的选择下，保证自己的收益最大化。
+
+- base case：剩下最后一张牌：先手获取全部收益，后手为0；
+
+```cpp
+/* 这里的先后手都是相对于一个人而言 */
+int firstPick(std::vector<int> &nums, int l, int r);
+int secondPick(std::vector<int> &nums, int l, int r);
+
+int firstPick(std::vector<int> &nums, int l, int r) {
+	if (l == r) return nums[l];
+	int left = secondPick(nums, l + 1, r) + nums[l];
+	int right = secondPick(nums, l, r - 1) + nums[r];
+	return std::max(left, right);
+}
+
+int secondPick(std::vector<int> &nums, int l, int r) {
+	if (l == r) return 0;
+	return std::min(firstPick(nums, l + 1, r), firstPick(nums, l, r - 1));
+}
+
+int winnerScore(std::vector<int> &nums) {
+	return std::max(firstPick(nums, 0, nums.size() - 1), secondPick(nums, 0, nums.size() - 1));
+}
 ```
 
 

@@ -128,6 +128,7 @@
     <ClInclude Include="code03_all_permutation.hpp" />
     <ClInclude Include="code05_number_convert_to_letter.hpp" />
     <ClInclude Include="code06_01_bag.hpp" />
+    <ClInclude Include="code07_winner_score.hpp" />
     <ClInclude Include="code08_n_queens.hpp" />
     <ClInclude Include="code04_reverse_statck_with_recursion.hpp" />
   </ItemGroup>
