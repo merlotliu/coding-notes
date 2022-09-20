@@ -509,3 +509,116 @@ std::vector<std::vector<std::string>> solveNQueens(int n) {
 }
 ```
 
+
+
+## LeetCode & 代码随想录
+
+### 1 组合
+
+[77. 组合 - 力扣（LeetCode）](https://leetcode.cn/problems/combinations/)
+
+base case : i > k 將當前選取的内容放入結果數組
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> res;
+    void backtrack(int n, int k, int idx, vector<int> &picked) {
+        if(picked.size() == k) {
+            res.push_back(picked);
+            return ;
+        }
+        // selcted list
+        // idx : index of array [1 ... n]
+        for(int i = idx; i <= n; i++) {
+            picked.push_back(i); // picked
+            backtrack(n, k, i + 1, picked);
+            picked.pop_back(); // unpicked
+        }
+    }
+
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> picked;
+        backtrack(n, k, 1, picked);
+        return res;
+    }
+};
+```
+
+#### 剪枝
+
+设想以下情况，n=4，k=1时的递归树？
+
+可以得知，在第一层for循环中，从1往后的分支都是多余的。为什么是多余的？因为元素个数已经够了。
+
+我们需要的元素个数是k，当前已经有的元素为size，则k-size表示仍需要的个数，所以结束的位置应该为下一次能保证把选择填满的位置。所以，n-(k-size)+1是本轮的最后一个位置，這個+1可以通過舉例子確定。比如n=5，k=3的情況下，在第一輪size=0時，5-(3-0)+1=3，從3往後，還有4、5。
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> res;
+    void backtrack(int n, int k, int idx, vector<int> &picked) {
+        if(picked.size() == k) {
+            res.push_back(picked);
+            return ;
+        }
+        // selcted list
+        // idx : index of array [1 ... n]
+        for(int i = idx; i <= n - (k - picked.size()) + 1; i++) {
+            picked.push_back(i); // picked
+            backtrack(n, k, i + 1, picked);
+            picked.pop_back(); // unpicked
+        }
+    }
+
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> picked;
+        backtrack(n, k, 1, picked);
+        return res;
+    }
+};
+```
+
+### 2 组合总和
+
+[216. 组合总和 III - 力扣（LeetCode）](https://leetcode.cn/problems/combination-sum-iii/)
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> res;
+    void backtrack(int k, int n, int idx, vector<int> &picked) {
+        // base case
+        if(k == picked.size()) {
+            if(n == 0) {
+                res.push_back(picked);
+            }
+            return ;
+        }
+        // selected list
+        for(int i = idx; i <= 9; i++) {
+            picked.push_back(i);
+            backtrack(k, n - i, i + 1, picked);
+            picked.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<int> picked;
+        backtrack(k, n, 1, picked);
+        return res;
+    }
+};
+```
+
+#### 剪枝
+
+选择的总和已经大于n的话，则没必要继续遍历了。
+
+```cpp
+		// cut off
+        if(n < 0) {
+            return;
+        }
+```
+
