@@ -9,3 +9,5 @@ void Graph::generateGraph(std::vector<std::vector<int>> &arr) {
 void Graph::doHandle(Vertex *ver) {
 	std::cout << ver->val << std::endl;
 }
+
+
