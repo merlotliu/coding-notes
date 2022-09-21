@@ -1039,20 +1039,113 @@ public:
 
 ### 13 重新安排行程
 
+[332. 重新安排行程 - 力扣（LeetCode）](https://leetcode.cn/problems/reconstruct-itinerary/)
+
+- 保证机票行程有效；
+- 字典序最小；
+
 
 
 ```cpp
 
 ```
 
+回溯暴力解（超时）：
+
+```cpp
+class Solution {
+	vector<string> res;
+public:
+	vector<string> getMinDictSort(vector<string> &other) {
+		if (res.empty()) return other;
+		int i = 0;
+		while (i < other.size() && other[i] == res[i]) i++;
+		return i == other.size() ? res : other[i] < res[i] ? other : res;
+	}
+
+	void backtrack(vector<vector<string>>& tickets, string last, vector<string>& picked, vector<bool>& memo) {
+		if (picked.size() == tickets.size()) {
+			picked.push_back(last);
+			res = getMinDictSort(picked);
+			picked.pop_back();
+			return;
+		}
+		//["JFK", "ATL", "JFK", "SFO", "ATL", "SFO"]
+		for (int i = 0; i < tickets.size(); i++) {
+			if (picked.empty() && "JFK" != tickets[i][0]) {
+				continue;
+			}
+			if (memo[i]) {
+				continue;
+			}
+			if (last == tickets[i][0]) {
+				memo[i] = true;
+				picked.push_back(tickets[i][0]);
+				backtrack(tickets, tickets[i][1], picked, memo);
+				picked.pop_back();
+				memo[i] = false;
+			}
+		}
+	}
+
+	vector<string> findItinerary(vector<vector<string>>& tickets) {
+		vector<bool> memo(tickets.size(), false);
+		vector<string> picked;
+		backtrack(tickets, "JFK", picked, memo);
+		return res;
+	}
+};
+```
+
 
 
 ### 14 N皇后
 
+[51. N 皇后 - 力扣（LeetCode）](https://leetcode.cn/problems/n-queens/)
 
+- 位图优化版；
 
 ```cpp
+class Solution {
+    vector<vector<string>> res;
+public:
+    int getIdx(int num) {
+        int idx = -1;
+        while(num) {
+            num = num >> 1;
+            idx++;
+        }
+        return idx;
+    }
 
+    void backtrack(int col_lim, int ldia_lim, int rdia_lim, int limit, int row, vector<string> &picked) {
+        // base case : aready set down
+        if(col_lim == limit) {
+            res.push_back(picked);
+            return ;
+        }
+        int pos = limit & (~(col_lim | ldia_lim | rdia_lim));
+        while(pos != 0) {
+            int most_right_one = pos & (~pos + 1);
+            pos -= most_right_one;
+            int idx = getIdx(most_right_one);
+            picked[row][idx] = 'Q';
+            backtrack((col_lim | most_right_one),
+                (ldia_lim | most_right_one) << 1,
+                (rdia_lim | most_right_one) >> 1,
+                limit,
+                row + 1,
+                picked);
+            picked[row][idx] = '.';
+        }
+    }
+
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> picked(n, string(n, '.'));
+        backtrack(0, 0, 0, (1 << n) - 1, 0, picked);
+        return res;
+    }
+};
 ```
 
 

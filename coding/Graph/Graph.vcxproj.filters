@@ -53,5 +53,8 @@
     <ClInclude Include="code06_dijkstra.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code07_arrange_journey.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

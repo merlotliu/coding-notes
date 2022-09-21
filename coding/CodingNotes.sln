@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PriorityQueue", "PriorityQu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Backtrack", "Backtrack\Backtrack.vcxproj", "{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Exam", "Exam\Exam.vcxproj", "{639D4442-E935-4BF4-9397-EC3A3447119E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -91,6 +93,14 @@ Global
 		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Release|x64.Build.0 = Release|x64
 		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Release|x86.ActiveCfg = Release|Win32
 		{62EC3AAB-AFD1-42BB-BA5B-CDB55B403F66}.Release|x86.Build.0 = Release|Win32
+		{639D4442-E935-4BF4-9397-EC3A3447119E}.Debug|x64.ActiveCfg = Debug|x64
+		{639D4442-E935-4BF4-9397-EC3A3447119E}.Debug|x64.Build.0 = Debug|x64
+		{639D4442-E935-4BF4-9397-EC3A3447119E}.Debug|x86.ActiveCfg = Debug|Win32
+		{639D4442-E935-4BF4-9397-EC3A3447119E}.Debug|x86.Build.0 = Debug|Win32
+		{639D4442-E935-4BF4-9397-EC3A3447119E}.Release|x64.ActiveCfg = Release|x64
+		{639D4442-E935-4BF4-9397-EC3A3447119E}.Release|x64.Build.0 = Release|x64
+		{639D4442-E935-4BF4-9397-EC3A3447119E}.Release|x86.ActiveCfg = Release|Win32
+		{639D4442-E935-4BF4-9397-EC3A3447119E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

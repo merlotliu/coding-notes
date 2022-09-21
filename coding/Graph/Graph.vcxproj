@@ -134,6 +134,7 @@
     <ClInclude Include="code05_prim.hpp" />
     <ClInclude Include="code06_dijkstra_diy_heap.hpp" />
     <ClInclude Include="code06_dijkstra.hpp" />
+    <ClInclude Include="code07_arrange_journey.hpp" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="Vertex.h" />
