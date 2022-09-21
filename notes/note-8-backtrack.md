@@ -622,3 +622,44 @@ public:
         }
 ```
 
+### 3 電話號碼的字母組合
+
+[17. 电话号码的字母组合 - 力扣（LeetCode）](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
+
+- base case : 已選擇的字符串和數字字符串長度一致；
+- 每一層表示一個數字，通過ref找到對應的字母列表，這個字母列表就是每一層的選擇列表；
+- 每一層每一次從選擇列表選擇一個；
+
+```cpp
+class Solution {
+public:
+    vector<string> ref = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    vector<string> res;
+    void backtrack(string digits, int digits_idx, string picked) {
+        // base case : picked.size() == digits.size()
+        if(digits.size() == picked.size()) {
+            res.push_back(picked);
+            return;
+        }
+        
+        int num_idx = digits[digits_idx] - '2';
+        for(auto ch : ref[num_idx]) {
+            picked.push_back(ch); // picked
+            backtrack(digits, digits_idx + 1, picked);
+            picked.pop_back(); // unpicked
+        }
+    }
+
+    vector<string> letterCombinations(string digits) {
+        if(digits.empty()) return {};
+        backtrack(digits, 0, "");
+        return res;
+    }
+};
+```
+
+**注意**：输入1 * #按键等等异常情况。
+
+代码中最好考虑这些异常情况，但题目的测试数据中应该没有异常情况的数据，所以我就没有加了。
+
+**但是要知道会有这些异常，如果是现场面试中，一定要考虑到！**
