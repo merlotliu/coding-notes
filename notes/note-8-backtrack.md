@@ -11,6 +11,8 @@
 
 对于一个问题里面的某个小决策，会有做与不做两个选择。
 
+回溯法三要素：路径、选择列表、结束条件。
+
 ## 经典题型
 
 ### 1 汉诺塔问题
@@ -513,6 +515,25 @@ std::vector<std::vector<std::string>> solveNQueens(int n) {
 
 ## LeetCode & 代码随想录
 
+### 回溯模板
+
+```cpp
+void backtrack(selected_list, start_idx, track) {
+	if(end condition) {
+		push(current_all_of_picked)
+		return;
+	}
+	
+	for(option : selected_list) {
+		picked; // update track
+		backtrack(selected_list, new_start_idx, track);
+		unpicked; // update track
+	}
+}
+```
+
+
+
 ### 1 组合
 
 [77. 组合 - 力扣（LeetCode）](https://leetcode.cn/problems/combinations/)
@@ -663,3 +684,384 @@ public:
 代码中最好考虑这些异常情况，但题目的测试数据中应该没有异常情况的数据，所以我就没有加了。
 
 **但是要知道会有这些异常，如果是现场面试中，一定要考虑到！**
+
+### 4 组合总和
+
+[39. 组合总和 - 力扣（LeetCode）](https://leetcode.cn/problems/combination-sum/)
+
+- 每一次选择的位置应该在上一次的位置或之后，而不能往前；
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> res;
+    void backtrack(vector<int> &candidates, int target, int idx, vector<int> &picked) {
+        if(target < 0) {
+            return;
+        }
+        // base case
+        if(target == 0) {
+            res.push_back(picked);
+            return;
+        }
+        for(int i = idx; i < candidates.size(); i++) {
+            picked.push_back(candidates[i]);
+            backtrack(candidates, target - candidates[i], i, picked);
+            picked.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> picked;
+        backtrack(candidates, target, 0, picked);
+        return res;
+    }
+};
+```
+
+### 5 组合总和 II
+
+[40. 组合总和 II - 力扣（LeetCode）](https://leetcode.cn/problems/combination-sum-ii/)
+
+- 先排序，方便哈希表去重；
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> res;
+    void backtrack(vector<int> &candidates, int target, int idx, vector<int> &picked) {
+        if(target < 0) {
+            return;
+        }
+        // base case
+        if(target == 0) {
+            res.push_back(picked);
+            return;
+        }
+        unordered_set<int> memo;
+        for(int i = idx; i < candidates.size(); i++) {
+            if(memo.find(candidates[i]) == memo.end()) {
+                picked.push_back(candidates[i]);
+                memo.insert(candidates[i]);
+                backtrack(candidates, target - candidates[i], i + 1, picked);
+                picked.pop_back();
+            }
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<int> picked;
+        backtrack(candidates, target, 0, picked);
+        return res;
+    }
+};
+```
+
+### 6 分割回文串
+
+[131. 分割回文串 - 力扣（LeetCode）](https://leetcode.cn/problems/palindrome-partitioning/)
+
+- 判断回文
+- 回溯三要素：路径、选择列表、终止条件；
+  - 选择列表：s到size-1的连续字符串，下一次的开始位置就是本次的末尾；
+
+```cpp
+class Solution {
+    vector<vector<string>> res;
+public:
+    bool isPalindrome(string &str, int l, int r) {
+        while(l <= r) {
+            if(str[l++] != str[r--]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    void backtrack(string &str, int s, vector<string> &picked) {
+        if(s == str.size()) {
+            res.push_back(picked);
+            return;
+        }
+        for(int i = s; i < str.size(); i++) {
+            if(!isPalindrome(str, s, i)) {
+                continue;
+            }
+            picked.push_back(str.substr(s, i - s + 1));
+            backtrack(str, i + 1, picked);
+            picked.pop_back();
+        }
+    }
+
+    vector<vector<string>> partition(string s) {
+        vector<string> picked;
+        backtrack(s, 0, picked);
+        return res;
+    }
+};
+```
+
+### 7 复原IP地址
+
+[93. 复原 IP 地址 - 力扣（LeetCode）](https://leetcode.cn/problems/restore-ip-addresses/)
+
+- 注意判断断点设置之后数字的合法性；
+- 每一次选择，最多往后三位；
+- 断点必须为4才合法，大于提前回溯，小于且遍历完字符串，提前回溯；
+
+```cpp
+class Solution {
+public:
+    vector<string> res;
+    bool isValid(string &str, int start, int end) {
+        if('0' == str[start]) {
+            return end == start;
+        }
+        if('3' <= str[start] && '9' >= str[start]) {
+            return (end - start < 2);
+        }
+        if('2' == str[start]) {
+            if(end - start < 2) {
+                return true;
+            }
+            if(str[start + 1] >= '6' || (str[start + 1] == '5' && str[end] >= '6')) {
+                return false;
+            }
+        }
+        // '1' must be true
+        return true;
+    }
+
+    void backtrack(string &str, int start_idx, string track) {
+        if(track.size() > str.size() + 4) {
+            return ;
+        }
+        if(start_idx == str.size()) {
+            if(track.size() == str.size() + 4) {
+                track.pop_back(); // pop the tail '.'
+                res.push_back(track);
+            }
+            return;
+        }
+        
+        for(int i = start_idx; i < str.size() && i < start_idx + 3; i++) {
+            if(!isValid(str, start_idx, i)) {
+                continue;
+            }
+            string cur = str.substr(start_idx, i - start_idx + 1);
+            backtrack(str, i + 1, track + cur + ".");
+        }
+    }
+
+    vector<string> restoreIpAddresses(string s) {
+        backtrack(s, 0, "");
+        return res;
+    }
+};
+```
+
+### 8 子集
+
+[78. 子集 - 力扣（LeetCode）](https://leetcode.cn/problems/subsets/)
+
+- 选择列表：nums；
+- 求子集的过程可以在沿途将内容加入进去，而不必遍历到末尾；
+
+```cpp
+class Solution {
+    vector<vector<int>> res;
+public:
+    /*
+    路径：回溯树的节点
+    选择列表：数组未选择元素
+    结束条件：到达回溯数底部
+    */
+    void backtrack(vector<int>& nums, int start_index, vector<int> &picked) {
+        res.push_back(picked);
+        for(int i = start_index; i < nums.size(); i++) {
+            picked.push_back(nums[i]);
+            backtrack(nums, i + 1, picked);
+            picked.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int> picked;
+        backtrack(nums, 0, picked);
+        return res;
+    }
+};
+```
+
+### 9 子集 II
+
+[90. 子集 II - 力扣（LeetCode）](https://leetcode.cn/problems/subsets-ii/)
+
+- 去重先排序
+
+```cpp
+class Solution {
+    vector<vector<int>> res;
+public:
+    void backtrack(vector<int>& nums, int start_index, vector<int> &picked) {
+        res.push_back(picked);
+        unordered_set<int> memo;
+        for(int i = start_index; i < nums.size(); i++) {
+            if(memo.find(nums[i]) != memo.end()) {
+                continue;
+            }
+            memo.insert(nums[i]);
+            picked.push_back(nums[i]);
+            backtrack(nums, i + 1, picked);
+            picked.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<int> picked;
+        backtrack(nums, 0, picked);
+        return res;
+    }
+};
+```
+
+### 10 递增子序列
+
+[491. 递增子序列 - 力扣（LeetCode）](https://leetcode.cn/problems/increasing-subsequences/)
+
+- 递增；
+- 在添加合理的字符串的路径上，依次添加子串；
+- 由于有重复，而且添加的字串一定是递增的（有序），所以可以直接去重；
+
+```cpp
+class Solution {
+    vector<vector<int>> res;
+public:
+    void backtrack(vector<int>& nums, int start_index, vector<int> &picked) {
+        unordered_set<int> memo;
+        for(int i = start_index; i < nums.size(); i++) {
+            if(memo.find(nums[i]) != memo.end()) {
+                continue;
+            }
+            if(!picked.empty() && picked[picked.size()-1] > nums[i]) {
+                continue;
+            }
+            picked.push_back(nums[i]);
+            memo.insert(nums[i]);
+            if(picked.size() > 1) {
+                res.push_back(picked);
+            }
+            backtrack(nums, i + 1, picked);
+            picked.pop_back();
+        }
+    }
+
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        vector<int> picked;
+        backtrack(nums, 0, picked);
+        return res;
+    }
+};
+```
+
+### 11 全排列
+
+[46. 全排列 - 力扣（LeetCode）](https://leetcode.cn/problems/permutations/)
+
+- 使用位图来记录已使用的索引，去重；
+
+```cpp
+class Solution {
+    vector<vector<int>> res;
+public:
+    void backtrack(vector<int>& nums, vector<int> &picked, int limit) {
+        if(picked.size() == nums.size()) {
+            res.push_back(picked);
+            return;
+        }
+        for(int i = 0; i < nums.size(); i++) {
+            if((1 << i) & limit) {
+                picked.push_back(nums[i]);
+                backtrack(nums, picked, (1 << i) ^ limit);
+                picked.pop_back();
+            }
+        }
+    }
+
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<int> picked;
+        backtrack(nums, picked, (1 << nums.size()) - 1);
+        return res;
+    }
+};
+```
+
+
+
+### 12 全排列II
+
+[47. 全排列 II - 力扣（LeetCode）](https://leetcode.cn/problems/permutations-ii/)
+
+
+
+```cpp
+class Solution {
+    vector<vector<int>> res;
+public:
+    void backtrack(vector<int>& nums, vector<int> &picked, int limit) {
+        if(picked.size() == nums.size()) {
+            res.push_back(picked);
+            return;
+        }
+        unordered_set<int> memo;
+        for(int i = 0; i < nums.size(); i++) {
+            if(memo.find(nums[i]) != memo.end()) {
+                continue;
+            }
+            if((1 << i) & limit) {
+                picked.push_back(nums[i]);
+                memo.insert(nums[i]);
+                backtrack(nums, picked, (1 << i) ^ limit);
+                picked.pop_back();
+            }
+        }
+    }
+
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<int> picked;
+        backtrack(nums, picked, (1 << nums.size()) - 1);
+        return res;
+    }
+};
+```
+
+
+
+### 13 重新安排行程
+
+
+
+```cpp
+
+```
+
+
+
+### 14 N皇后
+
+
+
+```cpp
+
+```
+
+
+
+### 15 解数独
+
+
+
+```cpp
+
+```
+
