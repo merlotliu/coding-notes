@@ -1045,8 +1045,58 @@ public:
 - 字典序最小；
 
 ```cpp
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <map>
 
+using namespace std;
+
+class Solution {
+    unordered_map<string, map<string, int>> tickets_map;
+    vector<string> picked;
+public:
+    /*
+        1. 每一个机场都有可能重复，所以我们可以让每一个起飞机场对应一个map存放目的地和其可访问的次数；
+        2. 由于map是有序的，所以第一个合理的行程就是最小的字典序；  
+        3. 对整理后的哈希表回溯遍历，找到第一个即可返回；
+    */
+    bool backtrack(string start, int N) {
+        // base case
+        if(picked.size() == N) {
+            return true;
+        }
+        for(auto des : tickets_map[start]) {
+            if(tickets_map[start][des.first]--) {
+                picked.push_back(des.first);
+                if(backtrack(des.first, N)) return true;
+                picked.pop_back();
+            }
+            tickets_map[start][des.first]++;
+        }
+        return false;
+    }
+
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        for(auto ticket : tickets) {
+            tickets_map[ticket[0]][ticket[1]]++;
+        }
+        picked.push_back("JFK");
+        backtrack("JFK", tickets.size() + 1);
+        return picked;
+    }
+};
+
+int main() {
+	Solution s;
+	vector<vector<string>> tickets = {{"JFK","SFO"},{"JFK","ATL"},{"SFO","ATL"},{"ATL","JFK"},{"ATL","SFO"}};
+	s.findItinerary(tickets);
+}
 ```
+
+#### Notes
+
+注意，使用auto遍历时的返回值是值不是引用。
 
 回溯暴力解（超时）：
 
@@ -1149,8 +1199,6 @@ public:
 
 
 ### 15 解数独
-
-
 
 ```cpp
 
