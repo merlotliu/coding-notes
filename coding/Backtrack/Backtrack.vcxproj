@@ -131,6 +131,7 @@
     <ClInclude Include="code07_winner_score.hpp" />
     <ClInclude Include="code08_n_queens.hpp" />
     <ClInclude Include="code04_reverse_statck_with_recursion.hpp" />
+    <ClInclude Include="code09_solve_sudoku.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

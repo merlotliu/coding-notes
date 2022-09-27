@@ -44,5 +44,8 @@
     <ClInclude Include="code07_winner_score.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code09_solve_sudoku.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
