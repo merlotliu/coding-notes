@@ -1200,7 +1200,110 @@ public:
 
 ### 15 解数独
 
-```cpp
+二维递归
 
+在这一题中，我们不仅需要在列上递归还要再行上递归。
+
+#### 思路1
+
+1. 既然在两个维度上递归，参数包含九宫格board、以及当前行列值row col；
+2. 首先在列 col 上递归，每次从 1-9 中选择一个合理的数；
+3. 当 col 越过边界时，行 row 进行一次递归跳转到下一行，如果递归返回false，返回上一行递归；
+4. 将返回值 设置为 bool，找到一个合法的解法即返回；
+5. 对于已经有数的位置，直接进行下一个位置递归，如果这个递归返回 false 说明解法不合理，不继续后面代码，向上回溯；
+6. row越过 边界则说明找到正确结果，如果找不到合适的数 填写空白，返回false。
+
+```cpp
+#pragma once
+#include <vector>
+#include <iostream>
+using namespace std;
+ 
+class Solution {
+public:
+	void printBoard(vector<vector<char>>& board) {
+		for (auto row : board) {
+			for (auto ch : row) {
+				std::cout << ch << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
+
+	bool isValid(vector<vector<char>>& board, int row, int col, int num) {
+		// col
+		char ch = '0' + num;
+		for (int i = 0; i < 9; i++) {
+			if (board[i][col] == ch) return false;
+		}
+		// row
+		for (int j = 0; j < 9; j++) {
+			if (board[row][j] == ch) return false;
+		}
+		// nine 
+		int urow = 3 * (row / 3);
+		int lcol = 3 * (col / 3);
+		for (int i = urow; i < urow + 3; i++) {
+			for (int j = lcol; j < lcol + 3; j++) {
+				if (board[i][j] == ch) return false;
+			}
+		}
+		return true;
+	}
+
+	bool backtrack(vector<vector<char>>& board, int row, int col) {
+		printBoard(board);
+		if (row >= 9) {
+			return true;
+		}
+		if (col >= 9) {
+            return backtrack(board, row + 1, 0);
+		}
+		if (board[row][col] != '.') {
+			return backtrack(board, row, col + 1);
+		}
+		for (int i = 1; i < 10; i++) {
+			if (!isValid(board, row, col, i)) {
+				continue;
+			}
+			board[row][col] = '0' + i;
+			if (backtrack(board, row, col + 1)) return true;
+			board[row][col] = '.';
+		}
+		return false;
+	}
+
+	void solveSudoku(vector<vector<char>>& board) {
+		backtrack(board, 0, 0);
+	}
+};
+```
+
+#### 思路2
+
+1. 双层循环遍历数组；
+2. 内层再嵌套一层循环选择数字；
+3. 因为有唯一正确的解，所以如果算法正确一定能找到并结束递归；
+4. 某一位置，如果9个数都不合法，说明前面的填写有误，需要向上回溯。
+
+```cpp
+bool backtrack(vector<vector<char>>& board) {
+    for (int i = 0; i < board.size(); i++) {
+        for (int j = 0; j < board.size(); j++) {
+            if(board[i][j] != '.') continue;
+            for(int k = 1; k < 10; k++) {
+            // for(int k = '1'; k <= '9'; k++) { // 这样就不用转化了
+                if(isValid(board, i, j, k)) {
+                    board[i][j] = '0' + k;
+                    if (backtrack(board)) return true;
+                    board[i][j] = '.';
+                }
+            } 
+            return false;
+        }
+    }
+    return true;
+}
 ```
 
