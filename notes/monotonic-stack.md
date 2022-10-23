@@ -24,21 +24,21 @@ comments: true
 
 ## Leetcode 练习
 
+### 中等
+
 [739. 每日温度 - 力扣（Leetcode）](https://leetcode.cn/problems/daily-temperatures/)
-
-
 
 [496. 下一个更大元素 I - 力扣（Leetcode）](https://leetcode.cn/problems/next-greater-element-i/description/)
 
-
-
 [503. 下一个更大元素 II - 力扣（Leetcode）](https://leetcode.cn/problems/next-greater-element-ii/description/)
 
+### 困难
 
+这两道题的暴力解法还是挺好想的，O(N)解法有些麻烦。
 
 [42. 接雨水 - 力扣（Leetcode）](https://leetcode.cn/problems/trapping-rain-water/description/)
 
-
+[84. 柱状图中最大的矩形 - 力扣（Leetcode）](https://leetcode.cn/problems/largest-rectangle-in-histogram/description/)
 
 ## Reference 
 
