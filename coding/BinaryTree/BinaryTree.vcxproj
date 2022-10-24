@@ -166,6 +166,7 @@
     <ClInclude Include="code09_successor_node.hpp" />
     <ClInclude Include="code10_serializing_deserializing.hpp" />
     <ClInclude Include="code11_ms_paper_folding.hpp" />
+    <ClInclude Include="morris.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

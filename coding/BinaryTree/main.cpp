@@ -7,6 +7,7 @@
 #include "code08_find_common_ancestor.hpp"
 #include "code10_serializing_deserializing.hpp"
 #include "code11_ms_paper_folding.hpp"
+#include "morris.hpp"
 
 int main(int argc, char *argv[]) {
 	TreeNode *left1 = new TreeNode(4);
@@ -19,27 +20,43 @@ int main(int argc, char *argv[]) {
 
 	std::cout << "Binary Tree Traversal" << std::endl;
 	BinaryTree tree;
+	
 	std::cout << "Binary Tree Preordered Traversal" << std::endl;
+	std::cout << "Recursion : ";
 	tree.preorderTraversalRecursion(root);
 	std::cout << std::endl;
+	std::cout << "Iteration : ";
 	tree.preorderTraversal(root);
 	std::cout << std::endl;
+	std::cout << "Morris : ";
+	tree.morrisPreorderTraversal(root);
+	std::cout << std::endl;
 	std::cout << "Binary Tree Inordered Traversal" << std::endl;
+	std::cout << "Recursion : ";
 	tree.inorderTraversalRecursion(root);
 	std::cout << std::endl;
+	std::cout << "Iteration : ";
 	tree.inorderTraversal(root);
 	std::cout << std::endl;
+	std::cout << "Morris : ";
+	tree.morrisInorderTraversal(root);
+	std::cout << std::endl;
 	std::cout << "Binary Tree Postordered Traversal" << std::endl;
+	std::cout << "Recursion : ";
 	tree.postorderTraversalRecursion(root);
 	std::cout << std::endl;
+	std::cout << "Iteration : ";
 	tree.postorderTraversal(root);
+	std::cout << std::endl;
+	std::cout << "Morris : ";
+	tree.morrisPostorderTraversal(root);
 	std::cout << std::endl;
 
 	std::cout << "Level Traversal" << std::endl;
 	tree.levelTraversal(root);
 	std::cout << std::endl;
 
-	std::cout << "Get Max Width" << std::endl;
+	/*std::cout << "Get Max Width" << std::endl;
 	std::cout << tree.getMaxWidthByMap(root) << std::endl;
 	std::cout << tree.getMaxWidth(root) << std::endl;
 
@@ -79,7 +96,10 @@ int main(int argc, char *argv[]) {
 	printPaperFolds(1, n, true);
 	std::cout << std::endl;
 	printPaperFolds(n, true);
-	std::cout << std::endl;
-	
+	std::cout << std::endl;*/
+
+	std::cout << "Morris Traversal" << std::endl;
+	tree.morrisTraversal(root);
+
 	return 0;
 }

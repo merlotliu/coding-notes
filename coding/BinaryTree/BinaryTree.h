@@ -38,5 +38,9 @@ public:
 	int getMaxWidthByMap(TreeNode *root);
 	int getMaxWidth(TreeNode *root);
 
-	// 
+	// morris traversal
+	void morrisTraversal(TreeNode *root);
+	void morrisPreorderTraversal(TreeNode *root); 
+	void morrisInorderTraversal(TreeNode *root);
+	void morrisPostorderTraversal(TreeNode *root);
 };

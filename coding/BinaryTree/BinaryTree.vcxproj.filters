@@ -56,5 +56,8 @@
     <ClInclude Include="code11_ms_paper_folding.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="morris.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
