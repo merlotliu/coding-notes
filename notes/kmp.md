@@ -115,6 +115,12 @@ void getNextArr(std::string str, std::vector<int> &next) {
 }
 ```
 
+## Leetcode
+
+### 简单
+
+[459. 重复的子字符串 - 力扣（Leetcode）](https://leetcode.cn/problems/repeated-substring-pattern/)
+
 ## Reference 
 
 1. 
