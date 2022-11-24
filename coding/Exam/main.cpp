@@ -117,32 +117,13 @@ public:
 		return res;
 	}
 };
+#include <inttypes.h>
 
 int main() {
-	vector<vector<string>> tickets = { {"EZE", "AXA"}, {"TIA", "ANU"}, {"ANU", "JFK"}, {"JFK", "ANU"}, {"ANU", "EZE"}, {"TIA", "ANU"}, {"AXA", "TIA"}, {"TIA", "JFK"}, {"ANU", "TIA"}, {"JFK", "TIA"} };
-	Solution s;
-	vector<string> res = s.findItinerary(tickets);
-	for (auto str : res) {
-		cout << str << endl;
-	}
-	//int n = 100;
-	//while(n--) {
-	//	int N = rand() % 99999 + 1;
-	//	
-	//	std::vector<int> records;
-	//	for (int i = 0; i < N; i++) {
-	//		records.push_back(rand() % 100000);
-	//	}
-	//	//std::vector<int> records = {3, 3, 8, 7, 10, 10};
-	//	//std::vector<int> records = { 3, 3, 5, 7, 9 };
-	//	int total = rand() % 999999999 + 1;
-	//	std::cout << N << " " << total << std::endl;
-	//	getRecordLimit(N, total, records);
-	//	std::cout << force(N, total, records) << std::endl;
-	//	/*if (getRecordLimit(N, total, records) != force(N, total, records)) {
-	//		std::cout << "False!" << std::endl;
-	//		return -1;
-	//	}*/	
-	//}
+	uint32_t addr = 0x10000000;
+	uint64_t idt = ((uint64_t)((uint32_t)addr << 16));
+	uint64_t tmp = 0x100000000000;
+	printf("%llu\n", idt);
+	printf("%llu\n", tmp);
 	return 0;
 }
