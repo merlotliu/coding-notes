@@ -68,7 +68,7 @@ next[idx] :
 - 在 idx 位置，表示 substr 的索引为 idx 的字符的前面的字符字串的最长前缀和后缀匹配长度，即 substr[0 - (idx - 1)]的最长前缀和后缀匹配长度。如在字符串 abcabce 中，idx = 6 时，next[6] 的值即为 abcabc 的最长前缀和后缀匹配长度（3），idx 为 3 时，next[6] 的值即为 abc 的最长前缀和后缀匹配长度（0）；
 - 同时，我们规定 next[0] = -1, next[1] = 0（当然可以自定义合适的值，相应修改后续代码即可）；
 
-显然，我们可以发现在 idx 位置的 next 数组值与 substr 的 idx 位置字符无关，与 0 - (idx - 1)的字符串的最长前缀和后缀匹配长度相关；
+显然，我们可以发现在 **idx 位置的 next 数组值与 substr 的 idx 位置字符无关**，与 0 - (idx - 1)的字符串的最长前缀和后缀匹配长度相关；
 
 ### next 数组赋值
 
@@ -94,19 +94,19 @@ void getNextArr(std::string str, std::vector<int> &next) {
 	if(str.size() == 0) {
         return ;
     }
-	next.push_back(-1);// next[0] = -1;
+	next[0] = -1;
     if(str.size() == 1) {
         return ;
     }
-	next.push_back(0);	// next[1] = 0;
+	next[1] = 0;
 	int idx = 2;
     int cn = next[1];
     while(idx < str.size()) {
-        if(str[idx] == str[next[idx - 1]]) {
-            str[idx++] = ++cn;
-            //str[idx++] = cn + 1; cn++;
+        if(str[idx - 1] == str[next[idx - 1]]) {
+            next[idx++] = ++cn;
+            //next[idx++] = cn + 1; cn++;
         } else if (idx == 0) {
-            str[idx++] = 0;
+            next[idx++] = 0;
         } else {
             cn = next[cn];
         }
