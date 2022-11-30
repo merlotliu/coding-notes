@@ -1,5 +1,36 @@
 # 优先级队列
 
+## 重写比较器
+
+当我们需要向优先级队列中添加复杂数据结构时，需要重写比较器。比较器的重写可以通过类或者lambda表达式。
+
+### 类
+
+如果通过类的形式，则应该像下面一样创建一个类并重写其 `()` 运算：
+
+```c++
+template<typename T>
+class comparator {
+public:
+    bool operator()(const T &lhs, const T &rhs) {
+        return lhs < rhs; 
+        /* 如果是复杂数据结构，则还需要参考 T 的 < 操作，如果没有重写或为简单数据结构，则构建大根堆 */
+        // return lhs > rhs;
+        // 小根堆
+    }
+};
+```
+
+### lambda 表达式
+
+```c++
+auto cmp = [](const T &left, const T &right) { return (left) < (right);};
+```
+
+### 其他
+
+事实上，应该还有一种方式间接的修改比较器的结果。我们知道 `stl` 提供了 `std::greater<T>` 和 `std::less<T>` 两个模板比较器，那么如果我们重写 `T` 的 `>` （greater）或 `<` （less），配合上对应的模板比较器，是不是也能实现对应的比较功能？答案当然是 OK 的。
+
 ## 经典题型
 
 ### 1 数组中位数
