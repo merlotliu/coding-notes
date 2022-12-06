@@ -58,7 +58,7 @@ dp\[i][j] 表示最大重量为 j 的情况下，从 0 - i 的物品中，能够
 
 ```c++
 /* weight 为重量数组 */
-int dp[thing.size()][maxWeight]{0};
+int dp[weight.size()][maxWeight + 1]{0};
 for(int j = weight[0]; j < maxWeight; j++) dp[0][j] = weight[0];
 ```
 
@@ -127,7 +127,7 @@ dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 
 ```c++
 for(int i = 1; i < weight.size(); i++) { // 遍历物品
-    for(int j = maxWeight; j >= 0; j--) { // 遍历背包容量 
+    for(int j = maxWeight; j >= 0 && j >= weight[i]; j--) { // 遍历背包容量 
 		dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
     }
 }
@@ -138,10 +138,11 @@ for(int i = 1; i < weight.size(); i++) { // 遍历物品
 ```c++
 int bag01(vector<int>& weight, vector<int>& value, int maxWeight) {
     /* weight 为重量数组 */
-    int dp[weight.size()][maxWeight]{0};
+    /* 值得注意的是dp数组的长度为最大重量+1 */
+    int dp[weight.size()][maxWeight + 1]{0};
     for(int i = 1; i < weight.size(); i++) { // 遍历物品    
-        for(int j = maxWeight; j >= 0; j--) { // 遍历背包容量         
-            dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);    
+        for(int j = maxWeight; j >= 0 && j >= weight[i]; j--) { // 遍历背包容量         
+        	dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);    
         }
     }
 }
