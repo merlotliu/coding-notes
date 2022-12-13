@@ -13,6 +13,7 @@ comments: true
 
 - 对于 dp 问题，必须清楚 dp 数组中每个位置的含义；
 - 可以将 dp 数组打印出来，方便排查出错；
+- 再求解组合问题的情况下，要考虑清楚便利的顺序，否则需要去重；
 
 ## 0-1 背包
 
@@ -67,7 +68,7 @@ for(int j = weight[0]; j < maxWeight; j++) dp[0][j] = weight[0];
 ##### 先遍历物品，再遍历重量
 
 ```c++
-for(int i = 1; i < weight.size(); i++) { // 遍历物品
+for(int i = 0; i < weight.size(); i++) { // 遍历物品
     for(int j = 0; j <= maxWeight; j++) { // 遍历背包容量
         if (j < weight[i]) dp[i][j] = dp[i - 1][j]; 
         else dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
@@ -79,7 +80,7 @@ for(int i = 1; i < weight.size(); i++) { // 遍历物品
 
 ```c++
 for(int j = 0; j <= maxWeight; j++) { // 遍历背包容量
-    for(int i = 1; i < weight.size(); i++) { // 遍历物品
+    for(int i = 0; i < weight.size(); i++) { // 遍历物品
         if (j < weight[i]) dp[i][j] = dp[i - 1][j];
         else dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
     }
@@ -93,7 +94,7 @@ int bag01(vector<int>& weight, vector<int>& value, int maxWeight) {
     /* weight 为重量数组 */
     int dp[weight.size()][maxWeight]{0};
     for(int j = weight[0]; j < maxWeight; j++) dp[0][j] = value[0];
-    for(int i = 1; i < weight.size(); i++) { // 遍历物品
+    for(int i = 0; i < weight.size(); i++) { // 遍历物品
         for(int j = 0; j <= maxWeight; j++) { // 遍历背包容量
             if (j < weight[i]) dp[i][j] = dp[i - 1][j]; 
             else dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
@@ -126,7 +127,7 @@ dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 - 遍历最大背包重量，**注意需要逆序遍历**，因为在转移方程中 j 位置的值依赖 j - weight[i] 位置的值，而该值一定是小于 j ，所以在更新完后面的值，才能够放心的将前面的值覆盖；
 
 ```c++
-for(int i = 1; i < weight.size(); i++) { // 遍历物品
+for(int i = 0; i < weight.size(); i++) { // 遍历物品
     for(int j = maxWeight; j >= 0 && j >= weight[i]; j--) { // 遍历背包容量 
 		dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
     }
@@ -140,12 +141,65 @@ int bag01(vector<int>& weight, vector<int>& value, int maxWeight) {
     /* weight 为重量数组 */
     /* 值得注意的是dp数组的长度为最大重量+1 */
     int dp[weight.size()][maxWeight + 1]{0};
-    for(int i = 1; i < weight.size(); i++) { // 遍历物品    
+    for(int i = 0; i < weight.size(); i++) { // 遍历物品    
         for(int j = maxWeight; j >= 0 && j >= weight[i]; j--) { // 遍历背包容量         
         	dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);    
         }
     }
 }
+```
+
+## 完全背包
+
+将 01 背包问题描述中每个物品最多只能取 1 次，变为每个物品可以取无数次。
+
+### 一维 dp 数组完全背包
+
+由于，每个物品可以重复选取，故在遍历背包容量更新 dp 时，应顺序遍历：
+
+```c++
+int bagCompleted(vector<int>& weight, vector<int>& value, int maxWeight) {
+    /* weight 为重量数组 */
+    /* 值得注意的是dp数组的长度为最大重量+1 */
+    int dp[weight.size()][maxWeight + 1]{0};
+    for(int i = 0; i < weight.size(); i++) { // 遍历物品    
+        for(int j = weight[i]; j <= maxWeight; j++) { // 遍历背包容量         
+        	dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);    
+        }
+    }
+}
+```
+
+值得注意的是：
+
+- 完全背包中，物品和容量的遍历顺序可以交换；
+
+### Leetcode
+
+[518. 零钱兑换 II - 力扣（Leetcode）](https://leetcode.cn/problems/coin-change-ii/)
+
+```c++
+class Solution {
+public:
+    /* 注意：组合的情况下一定要主要便利的顺序，不然就需要去重！ */
+    int change(int amount, vector<int>& coins) {
+        /* dp[j] 表示容量为 j 的背包的组合种数 */
+        vector<int> dp(amount + 1, 0);
+        /* base case dp[0] = 1 表示凑齐 0 只有 1 中可能（什么硬币都不选） */
+        dp[0] = 1;
+        /* 先遍历硬币规格，再遍历背包容量，能保证如{1， 2， 5}的规格下，只出现{1, 2}，而不会出现{2,1} */
+        /* 每一层使用当前硬币规格凑amount的过程就是，用新的规格替换旧规格增加组合的方式 */
+        for(int i = 0; i < coins.size(); i++) {
+            /* 小于 i 的背包容量肯定不会增加新的组合 */
+            for(int j = coins[i]; j <= amount; j++) {
+                /* 表示使用 coint[i] 为 dp[j] 增加了 dp[j - coins[i]] * 1 种组合 */
+                /* 这个 1 表示的就是当前规格的硬币 */
+                dp[j] += dp[j - coins[i]];
+            }
+        }
+        return dp[amount];
+    }
+};
 ```
 
 ## Reference 
