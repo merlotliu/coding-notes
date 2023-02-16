@@ -602,16 +602,16 @@ ListNode* LinkedList::hasCycle(ListNode *head) {
 	while (fast != nullptr && fast->next != nullptr) {
 		slow = slow->next;
 		fast = fast->next->next;
-		if (slow == fast) break;
+		if (slow == fast) {
+            fast = head;
+            while (fast != slow) {
+                slow = slow->next;
+                fast = fast->next;
+            }
+            return slow;
+        }
 	}
-	if (fast == nullptr || fast->next == nullptr) return nullptr;
-	
-	fast = head;
-	while (fast != slow) {
-		slow = slow->next;
-		fast = fast->next;
-	}
-	return slow;
+	return nullptr;
 }
 ```
 
@@ -656,16 +656,13 @@ ListNode* LinkedList::findFirstIntersectionWithNoLoop(ListNode *head1, ListNode 
 
 注意，两个节点和一个节点相交时的循环判断。
 
-```
+```cpp
 ListNode* LinkedList::findFirstIntersectionWithNoLoopEx(ListNode *head1, ListNode *head2) {
 	ListNode *cur1 = head1;
 	ListNode *cur2 = head2;
-	while (cur1 != cur2) {
-		cur1 = cur1->next;
-		cur2 = cur2->next;
-		if (cur1 == nullptr && cur2 == nullptr) return nullptr;
-		if (cur1 == nullptr) cur1 = head2;
-		if (cur2 == nullptr) cur2 = head1;
+	while ( cur1 != cur2 ) {
+		cur1 = cur1 ? cur1->next : head2;
+		cur2 = cur2 ? cur2->next : head1;
 	}
 	return cur1;
 }
